@@ -16,6 +16,12 @@
     "noImplicitAny": false,
     "strictBindCallApply": false,
     "forceConsistentCasingInFileNames": false,
-    "noFallthroughCasesInSwitch": false
+    "noFallthroughCasesInSwitch": false,
+    "strict": true,
+    "paths": {
+      "@src/*": ["server/src/*"],
+      "@app/*": ["src/app/*"],
+    },
+    "allowJs": true
   }
 }
