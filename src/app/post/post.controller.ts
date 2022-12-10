@@ -1,4 +1,16 @@
-import { Controller } from '@nestjs/common';
+import { Controller, Get } from '@nestjs/common';
+
+import { PostProfileResponse } from '@app/post/dtos/post-profile.response';
+import { PostService } from '@app/post/post.service';
 
 @Controller('posts')
-export class PostController {}
+export class PostController {
+  constructor(private readonly postService: PostService) {}
+
+  @Get()
+  async getAllPosts(): Promise<[PostProfileResponse]> {
+    const posts = await this.postService.getAllPosts();
+    // return posts.map((post) => new PostProfileResponse(post));
+    return;
+  }
+}

@@ -20,8 +20,5 @@ export class PostProfileResponse {
     this.views = post.views;
     this.redirectUrl = post.redirectUrl;
     this.uploadedAt = post.uploadedAt;
-    this.createdAt = post.createdAt;
-    this.updatedAt = post.updatedAt;
-    this.deletedAt = post.deletedAt;
   }
 }
