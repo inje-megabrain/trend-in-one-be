@@ -3,17 +3,66 @@ import { ApiProperty } from '@nestjs/swagger';
 import { CommunityTitle, PostProperties } from '../../../domain/post/post';
 
 export class PostProfileResponse {
-  @ApiProperty() private id!: string;
-  @ApiProperty() private title!: string;
-  @ApiProperty() private author!: string;
-  @ApiProperty() private views!: number | null;
-  @ApiProperty() private likes!: number | null;
-  @ApiProperty() private hasImage!: boolean | null;
-  @ApiProperty() private postUrl!: string;
-  @ApiProperty() private uploadedAt!: Date;
-  @ApiProperty() private createdAt!: Date;
-  @ApiProperty() private updatedAt!: Date;
-  @ApiProperty() private communityTitle!: CommunityTitle;
+  @ApiProperty({
+    description: '게시글 고유 식별자(uuid v4)',
+    example: '386be2fa-0c21-43be-a35a-05c4cb995ae1',
+  })
+  id!: string;
+
+  @ApiProperty({ description: '게시글 제목', example: '게시글 제목' })
+  title!: string;
+
+  @ApiProperty({
+    description: '게시글 작성자 닉네임',
+    example: '작성자 닉네임',
+  })
+  author!: string;
+
+  @ApiProperty({
+    description: '게시글 조회수',
+    example: 123456,
+    nullable: true,
+    type: Number,
+  })
+  views!: number | null;
+
+  @ApiProperty({
+    description: '게시글 좋아요 수',
+    example: 123456,
+    nullable: true,
+    type: Number,
+  })
+  likes!: number | null;
+
+  @ApiProperty({
+    description: '게시글에 이미지가 포함되어 있는지 여부',
+    example: true,
+    type: Boolean,
+  })
+  hasImage!: boolean | null;
+
+  @ApiProperty({
+    description: '게시글 주소',
+    example: CommunityTitle.Reddit,
+    enum: CommunityTitle,
+    type: String,
+  })
+  postUrl!: string;
+
+  @ApiProperty({
+    description: '게시글이 업로드된 날짜',
+    example: '2021-01-01T00:00:00.000Z',
+    type: Date,
+  })
+  uploadedAt!: Date;
+
+  @ApiProperty({
+    description: '게시글이 속한 커뮤니티 명',
+    example: CommunityTitle.Reddit,
+    enum: CommunityTitle,
+    type: String,
+  })
+  communityTitle!: CommunityTitle;
 
   constructor(post: PostProperties) {
     this.id = post.id;
