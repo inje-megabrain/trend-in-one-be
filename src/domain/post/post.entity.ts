@@ -3,10 +3,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  JoinColumn,
+  OneToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
+import { Community } from './community.entity';
 import { PostProperties } from './post';
 
 @Entity('posts')
@@ -15,26 +18,36 @@ export class Post implements PostProperties {
   id!: string;
 
   @Column({ type: 'varchar', length: 100 })
-  title: string;
+  title!: string;
 
   @Column({ type: 'varchar', length: 100 })
   author!: string;
 
-  @Column({ type: 'int' })
-  views: number;
+  @Column({ type: 'int', nullable: true })
+  views!: number | null;
+
+  @Column({ type: 'int', nullable: true })
+  likes!: number | null;
+
+  @Column({ type: 'boolean' })
+  hasImage!: boolean;
 
   @Column()
-  redirectUrl: string;
+  postUrl!: string;
 
   @Column({ type: 'date' })
-  uploadedAt: Date;
+  uploadedAt!: Date;
 
   @CreateDateColumn()
-  createdAt: Date;
-
-  @DeleteDateColumn({ nullable: true })
-  deletedAt: Date | null;
+  createdAt!: Date;
 
   @UpdateDateColumn()
-  updatedAt: Date;
+  updatedAt!: Date;
+
+  @DeleteDateColumn({ nullable: true })
+  deletedAt!: Date | null;
+
+  @OneToOne(() => Community)
+  @JoinColumn()
+  community!: Community;
 }
