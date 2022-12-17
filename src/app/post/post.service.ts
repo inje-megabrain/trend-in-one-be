@@ -1,13 +1,23 @@
+import { Post } from '@domain/post/post.entity';
 import { Injectable } from '@nestjs/common';
-
-import { Post } from '../../domain/post/post.entity';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class PostService {
-  // TODO: Implement PostRepository
-  // TODO: Implement PostService
-  async getAllPosts(): Promise<[Post]> {
-    // TODO: Return all posts
-    return;
+  constructor(
+    @InjectRepository(Post)
+    private readonly postRepository: Repository<Post>,
+  ) {
+  }
+
+  async getAllPosts(): Promise<Post[]> {
+    const posts = await this.postRepository.find(
+      {
+        relations: ['community'],
+      }
+    );
+
+    return posts;
   }
 }
