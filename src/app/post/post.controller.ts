@@ -12,9 +12,9 @@ export class PostController {
   @Get()
   @ApiOperation({ summary: '현재 인기글 목록을 조회합니다' })
   @ApiOkResponse({ type: [PostProfileResponse] })
-  async getAllPosts(): Promise<[PostProfileResponse]> {
+  async getAllPosts(): Promise<PostProfileResponse[]> {
     const posts = await this.postService.getAllPosts();
-    // return posts.map((post) => new PostProfileResponse(post));
-    return;
+
+    return posts.map((post) => new PostProfileResponse(post));
   }
 }
