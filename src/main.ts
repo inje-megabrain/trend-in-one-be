@@ -3,7 +3,9 @@ import {
   FastifyAdapter,
   NestFastifyApplication,
 } from '@nestjs/platform-fastify';
+import { SwaggerModule } from '@nestjs/swagger';
 
+import generateSwaggerDocument from './infrastructure/swagger/swagger.generator';
 import { MainModule } from './main.module';
 
 (async () => {
@@ -12,5 +14,8 @@ import { MainModule } from './main.module';
     new FastifyAdapter(),
   );
 
-  await app.listen(process.env.APP_PORT || 3000, '0.0.0.0');
+  SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
+    swaggerOptions: { persistAuthorization: true },
+  });
+  await app.listen(process.env.APP_PORT || 3000, '' + '0.0.0.0');
 })();
