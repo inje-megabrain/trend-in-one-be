@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { CommunityTitle, PostProperties } from '../../../domain/post/post';
+import { CommunityTitle, PostProperties } from '@domain/post/post';
 
 export class PostProfileResponse {
   @ApiProperty({
@@ -43,8 +43,7 @@ export class PostProfileResponse {
 
   @ApiProperty({
     description: '게시글 주소',
-    example: CommunityTitle.Reddit,
-    enum: CommunityTitle,
+    example: 'https://www.reddit.com/r/funny/comments/zqfzfc/no_way/',
     type: String,
   })
   postUrl!: string;
@@ -58,7 +57,7 @@ export class PostProfileResponse {
 
   @ApiProperty({
     description: '게시글이 속한 커뮤니티 명',
-    example: CommunityTitle.Reddit,
+    example: CommunityTitle.REDDIT,
     enum: CommunityTitle,
     type: String,
   })

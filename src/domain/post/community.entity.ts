@@ -1,6 +1,8 @@
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
 
 import { CommunityProperties, CommunityTitle } from './post';
+
+import { Post } from '@domain/post/post.entity';
 
 @Entity('communities')
 export class Community implements CommunityProperties {
@@ -9,4 +11,7 @@ export class Community implements CommunityProperties {
 
   @Column({ type: 'enum', enum: CommunityTitle })
   title!: CommunityTitle;
+
+  @OneToMany(() => Post, ({ community }) => community)
+  posts!: Post[];
 }
