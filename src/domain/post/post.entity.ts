@@ -3,8 +3,7 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
-  JoinColumn,
-  OneToOne,
+  ManyToOne,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
@@ -17,10 +16,10 @@ export class Post implements PostProperties {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column()
   title!: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column()
   author!: string;
 
   @Column({ type: 'int', nullable: true })
@@ -47,7 +46,6 @@ export class Post implements PostProperties {
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date | null;
 
-  @OneToOne(() => Community)
-  @JoinColumn()
+  @ManyToOne(() => Community, (community) => community)
   community!: Community;
 }
