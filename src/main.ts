@@ -1,9 +1,21 @@
 import { NestFactory } from '@nestjs/core';
+import {
+  FastifyAdapter,
+  NestFastifyApplication,
+} from '@nestjs/platform-fastify';
+import { SwaggerModule } from '@nestjs/swagger';
 
-import { AppModule } from '@app/app.module';
+import generateSwaggerDocument from './infrastructure/swagger/swagger.generator';
+import { MainModule } from './main.module';
 
-async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
-}
-bootstrap();
+(async () => {
+  const app = await NestFactory.create<NestFastifyApplication>(
+    MainModule,
+    new FastifyAdapter(),
+  );
+
+  SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
+    swaggerOptions: { persistAuthorization: true },
+  });
+  await app.listen(process.env.APP_PORT || 3000, '' + '0.0.0.0');
+})();
