@@ -24,5 +24,5 @@ import { MainModule } from './main.module';
   SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
     swaggerOptions: { persistAuthorization: true },
   });
-  await app.listen(process.env.APP_PORT || 3000, '' + '0.0.0.0');
+  await app.listen(process.env.APP_PORT || 13000, '' + '0.0.0.0');
 })();
