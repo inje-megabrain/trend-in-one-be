@@ -1,0 +1,22 @@
+postgres:
+    image: postgres
+    ports:
+      - "15432:15432"
+    environment:
+      POSTGRES_DB: "postgres"
+      POSTGRES_PASSWORD: "secret"
+      POSTGRES_USER: "tio"
+      POSTGRES_DB: "tio_server"
+        #PG_DATA: /var/lib/postgresql/data
+        #POSTGRES_HOST_AUTH_METHOD: "trust"
+    networks:
+      - webnet
+    volumes:
+      - api-db:/var/lib/postgresql/data
+        #- /var/lib/postgresql/data
+        #- pgdata:/var/lib/postgresql/data
+networks:
+  webnet:
+volumes:
+  api-db:
+    #  pgdata:

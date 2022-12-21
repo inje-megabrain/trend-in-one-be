@@ -1,5 +1,13 @@
-import { Controller, Get } from '@nestjs/common';
+import {
+  Controller,
+  DefaultValuePipe,
+  Get,
+  ParseIntPipe,
+  Query,
+} from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
+
+import { Pagination } from '../../infrastructure/types/pagination.types';
 
 import { PostProfileResponse } from '@app/post/dtos/post-profile.response';
 import { PostService } from '@app/post/post.service';
@@ -12,9 +20,15 @@ export class PostController {
   @Get()
   @ApiOperation({ summary: '현재 인기글 목록을 조회합니다' })
   @ApiOkResponse({ type: [PostProfileResponse] })
-  async getAllPosts(): Promise<PostProfileResponse[]> {
-    const posts = await this.postService.getAllPosts();
+  async getAllPosts(
+    @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
+    @Query('limit', new DefaultValuePipe(20), ParseIntPipe) limit: number,
+  ): Promise<Pagination<PostProfileResponse>> {
+    const { items, meta } = await this.postService.getAllPosts({ page, limit });
 
-    return posts.map((post) => new PostProfileResponse(post));
+    return {
+      items: items.map((item) => new PostProfileResponse({ ...item })),
+      meta,
+    };
   }
 }

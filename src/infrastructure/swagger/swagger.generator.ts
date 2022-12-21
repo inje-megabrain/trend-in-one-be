@@ -8,7 +8,7 @@ const document = new DocumentBuilder()
   .setTitle(`TREND-IN-ONE API`)
   .setDescription('TIO API 문서')
   // .addBearerAuth({ type: 'http', scheme: 'bearer', bearerFormat: 'JWT' })
-  .addServer(process.env.APP_URL || 'http://localhost:13000')
+  .addServer(process.env.APP_URL || 'http://localhost:3000')
   .setVersion('1.0.0');
 
 tags.forEach((tag) => document.addTag(tag.name, tag.description));
