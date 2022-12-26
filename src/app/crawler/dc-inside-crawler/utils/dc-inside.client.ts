@@ -37,12 +37,12 @@ export class DcInsideClient implements CrawlerClient {
   }
 
   async crawlAllPosts(url: string): Promise<PostIngredients[]> {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     await page.goto(url);
     const tableHandle: ElementHandle = await page.$('table');
 
-    const datas: PostIngredients[] = [];
+    const data: PostIngredients[] = [];
     const crawledDatas: any[] = [];
     const rows = await tableHandle.$$('tr');
     for (const row of rows) {
@@ -70,7 +70,6 @@ export class DcInsideClient implements CrawlerClient {
         }
       }
     }
-    console.log(crawledDatas);
 
     for (const crawledData of crawledDatas) {
       const postPage = await browser.newPage();
@@ -105,9 +104,9 @@ export class DcInsideClient implements CrawlerClient {
         postUrl: `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
         communityTitle: CommunityTitle.DC_INSIDE,
       };
-      datas.push(post);
+      data.push(post);
     }
-    return datas;
+    return data;
   }
 
   isNumberString(input: string): boolean {
