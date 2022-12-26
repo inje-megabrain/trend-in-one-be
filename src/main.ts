@@ -14,6 +14,13 @@ import { MainModule } from './main.module';
     new FastifyAdapter(),
   );
 
+  // CORS 해결코드
+  app.enableCors({
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
+
   SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
     swaggerOptions: { persistAuthorization: true },
   });
