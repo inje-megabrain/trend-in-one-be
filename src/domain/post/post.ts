@@ -19,6 +19,7 @@ export type PostProperties = {
 
 export enum CommunityTitle {
   REDDIT = 'Reddit',
+  DC_INSIDE = 'DC Inside',
 }
 
 export type CommunityProperties = {
