@@ -7,6 +7,7 @@ import {
   PostIngredients,
 } from '@app/crawler/dc-inside-crawler/dc-inside.command';
 import { CrawlerClient } from '@app/crawler/types/crawler.client';
+import { TimeoutException } from '@domain/errors/dc-inside-crawler.errors';
 import { CommunityTitle } from '@domain/post/post';
 
 export class DcInsideClient implements CrawlerClient {
@@ -39,7 +40,11 @@ export class DcInsideClient implements CrawlerClient {
   async crawlAllPosts(url: string): Promise<PostIngredients[]> {
     const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
-    await page.goto(url);
+    try {
+      await page.goto(url, { waitUntil: 'networkidle2', timeout: 5000 });
+    } catch (err) {
+      throw new TimeoutException();
+    }
     const tableHandle: ElementHandle = await page.$('table');
 
     const data: PostIngredients[] = [];
@@ -76,35 +81,36 @@ export class DcInsideClient implements CrawlerClient {
       await postPage.goto(
         `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
       );
-      const gallDate = await postPage.$("span[class='gall_date']");
+      try {
+        const gallDate = await postPage.$("span[class='gall_date']");
+        const date = await (
+          await gallDate.getProperty('textContent')
+        ).jsonValue();
+        const gallNickname = await postPage.$("span[class='nickname in']");
 
-      const date = await (
-        await gallDate.getProperty('textContent')
-      ).jsonValue();
-      const gallNickname = await postPage.$("span[class='nickname in']");
+        const authorNickname = await (
+          await gallNickname.getProperty('textContent')
+        ).jsonValue();
 
-      const authorNickname = await (
-        await gallNickname.getProperty('textContent')
-      ).jsonValue();
+        let hasImage = false;
+        if ((await page.$('img')) !== null) {
+          hasImage = true;
+        }
 
-      let hasImage = false;
-      if ((await page.$('img')) !== null) {
-        hasImage = true;
+        const post: PostIngredients = {
+          title: crawledData[1],
+          author: authorNickname,
+          uploadedAt: new Date(date),
+          views: Number(crawledData[4]),
+          likes: Number(crawledData[5]),
+          hasImage,
+          postUrl: `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
+          communityTitle: CommunityTitle.DC_INSIDE,
+        };
+        data.push(post);
+      } finally {
+        await postPage.close();
       }
-
-      await postPage.close();
-
-      const post: PostIngredients = {
-        title: crawledData[1],
-        author: authorNickname,
-        uploadedAt: new Date(date),
-        views: Number(crawledData[4]),
-        likes: Number(crawledData[5]),
-        hasImage,
-        postUrl: `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
-        communityTitle: CommunityTitle.DC_INSIDE,
-      };
-      data.push(post);
     }
     return data;
   }
