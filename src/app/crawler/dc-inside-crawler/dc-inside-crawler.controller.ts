@@ -8,7 +8,6 @@ export class DcInsideCrawlerController {
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
   ) {}
 
-  //TODO: 크롤러를 실행하는 API
   @Post()
   async crawlDcInside(): Promise<boolean> {
     return this.dcInsideCrawlerService.crawlDcInside();
