@@ -25,13 +25,11 @@ export class DcInsideCrawlerService {
       where: { title: CommunityTitle.DC_INSIDE },
     });
     posts.map(async (post) => {
-      const postEntity = this.postRepository.create({
+      await this.postRepository.save({
         ...post,
         community: communityId,
       });
-      await this.postRepository.save(postEntity);
     });
-    await this.postRepository.save(posts);
     return true;
   }
 }
