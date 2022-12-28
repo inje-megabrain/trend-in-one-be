@@ -9,7 +9,7 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { Pagination } from '../../infrastructure/types/pagination.types';
 
-import { PostProfileResponse } from '@app/post/dtos/post-profile.response';
+import { PostProfileResponse } from '@app/post/dto/post-profile.response';
 import { PostService } from '@app/post/post.service';
 
 @Controller('posts')
