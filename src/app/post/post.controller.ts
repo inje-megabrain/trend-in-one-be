@@ -13,7 +13,7 @@ import { PostProfileResponse } from '@app/post/dto/post-profile.response';
 import { PostService } from '@app/post/post.service';
 
 @Controller('posts')
-@ApiTags('게시글')
+@ApiTags('[게시글] 게시글')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
