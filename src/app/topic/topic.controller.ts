@@ -1,27 +1,14 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller, Get, Param } from '@nestjs/common';
 
 import { TopicProfileResponse } from '@app/topic/dto/topic-profile.response';
+import { TopicService } from '@app/topic/topic.service';
 
 @Controller('topics')
 export class TopicController {
-  @Get()
-  async getTopics(): Promise<TopicProfileResponse[]> {
-    const topics = [
-      {
-        id: 'string',
-        name: 'string',
-        query: 'string',
-        tweet_volume: 1,
-        url: 'string',
-      },
-      {
-        id: 'string',
-        name: 'string',
-        query: 'string',
-        tweet_volume: 1,
-        url: 'string',
-      },
-    ];
-    return topics.map((topic) => new TopicProfileResponse(topic));
+  constructor(private readonly topicService: TopicService) {}
+
+  @Get(':id')
+  async getTopics(@Param('id') id: string): Promise<TopicProfileResponse[]> {
+    return await this.topicService.getTopics(id);
   }
 }
