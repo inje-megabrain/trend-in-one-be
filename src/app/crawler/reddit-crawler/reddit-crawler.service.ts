@@ -63,7 +63,7 @@ export class RedditCrawlerService {
         views: null,
         likes: originalPost.data.ups,
         hasImage: originalPost.data.thumbnail !== 'self',
-        postUrl: originalPost.data.permalink,
+        postUrl: 'https://www.reddit.com' + originalPost.data.permalink,
         uploadedAt: new Date(originalPost.data.created_utc * 1000),
         community: communityId,
       } as Post;

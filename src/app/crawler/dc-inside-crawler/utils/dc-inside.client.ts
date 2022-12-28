@@ -8,7 +8,6 @@ import {
 } from '@app/crawler/dc-inside-crawler/dc-inside.command';
 import { CrawlerClient } from '@app/crawler/types/crawler.client';
 import { TimeoutException } from '@domain/errors/dc-inside-crawler.errors';
-import { CommunityTitle } from '@domain/post/post';
 
 export class DcInsideClient implements CrawlerClient {
   async crawl(): Promise<PostIngredients[]> {
@@ -105,7 +104,6 @@ export class DcInsideClient implements CrawlerClient {
           likes: Number(crawledData[5]),
           hasImage,
           postUrl: `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
-          communityTitle: CommunityTitle.DC_INSIDE,
         };
         data.push(post);
       } finally {
