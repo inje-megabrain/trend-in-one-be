@@ -1,4 +1,5 @@
-import { NestFactory } from '@nestjs/core';
+import { ClassSerializerInterceptor, ValidationPipe } from '@nestjs/common';
+import { NestFactory, Reflector } from '@nestjs/core';
 import {
   FastifyAdapter,
   NestFastifyApplication,
@@ -12,14 +13,18 @@ import { MainModule } from './main.module';
   const app = await NestFactory.create<NestFastifyApplication>(
     MainModule,
     new FastifyAdapter(),
+    { cors: true },
   );
 
-  // CORS 해결코드
-  app.enableCors({
-    origin: true,
-    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
-    credentials: true,
-  });
+  app
+    .useGlobalInterceptors(new ClassSerializerInterceptor(app.get(Reflector)))
+    .useGlobalPipes(
+      new ValidationPipe({
+        transform: true,
+        whitelist: true,
+        forbidNonWhitelisted: true,
+      }),
+    );
 
   SwaggerModule.setup('docs', app, generateSwaggerDocument(app), {
     swaggerOptions: { persistAuthorization: true },
