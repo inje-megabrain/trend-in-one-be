@@ -113,11 +113,6 @@ export class DcInsideClient implements CrawlerClient {
           await gallNickname.getProperty('textContent')
         ).jsonValue();
 
-        let hasImage = false;
-        if ((await page.$('img')) !== null) {
-          hasImage = true;
-        }
-
         const post: PostIngredients = {
           title: crawledData[1],
           author: authorNickname,
