@@ -4,7 +4,7 @@ import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 import { RedditCrawlerService } from '@app/crawler/reddit-crawler/reddit-crawler.service';
 
 @Controller('reddit-crawler')
-@ApiTags('[크롤러] Reddit')
+@ApiTags('[크롤러] REDDIT')
 export class RedditCrawlerController {
   constructor(private readonly redditCrawlerService: RedditCrawlerService) {}
 
