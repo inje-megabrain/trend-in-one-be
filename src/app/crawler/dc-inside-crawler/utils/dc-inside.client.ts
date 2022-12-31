@@ -113,7 +113,7 @@ export class DcInsideClient implements CrawlerClient {
         ).jsonValue();
 
         const post: PostIngredients = {
-          title: crawledData[1],
+          title: crawledData[1].replace(/\s\[\d+\]\s+/, ''),
           author: authorNickname,
           uploadedAt: new Date(date),
           views: Number(crawledData[4]),
