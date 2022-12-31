@@ -77,10 +77,31 @@ export class DcInsideClient implements CrawlerClient {
 
     for (const crawledData of crawledDatas) {
       const postPage = await browser.newPage();
-      await postPage.goto(
-        `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
-      );
+      await postPage.setViewport({ width: 1920, height: 1080 });
+      await postPage.setRequestInterception(true);
+
       try {
+        let hasImage = false;
+        postPage.on('request', (req) => {
+          if (
+            req.resourceType() == 'stylesheet' ||
+            req.resourceType() == 'font'
+          ) {
+            req.abort();
+          } else if (
+            req.resourceType() == 'image' ||
+            req.resourceType() == 'media'
+          ) {
+            req.abort();
+            hasImage = true;
+          } else {
+            req.continue();
+          }
+        });
+        await postPage.goto(
+          `https://gall.dcinside.com/board/view/?id=dcbest&no=${crawledData[0]}`,
+        );
+
         const gallDate = await postPage.$("span[class='gall_date']");
         const date = await (
           await gallDate.getProperty('textContent')
@@ -91,13 +112,8 @@ export class DcInsideClient implements CrawlerClient {
           await gallNickname.getProperty('textContent')
         ).jsonValue();
 
-        let hasImage = false;
-        if ((await page.$('img')) !== null) {
-          hasImage = true;
-        }
-
         const post: PostIngredients = {
-          title: crawledData[1],
+          title: crawledData[1].replace(/\s\[\d+\]\s+/, ''),
           author: authorNickname,
           uploadedAt: new Date(date),
           views: Number(crawledData[4]),
