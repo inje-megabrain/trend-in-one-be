@@ -18,9 +18,9 @@ export type PostProperties = {
 };
 
 export enum CommunityTitle {
-  REDDIT = 'Reddit',
-  DC_INSIDE = 'DC Inside',
-  TWITTER = 'Twitter',
+  REDDIT = 'REDDIT',
+  DC_INSIDE = 'DC_INSIDE',
+  TWITTER = 'TWITTER',
 }
 
 export type CommunityProperties = {
