@@ -24,6 +24,21 @@ export class DcInsideCrawlerService {
     const communityId = await this.communityRepository.findOne({
       where: { title: CommunityTitle.DC_INSIDE },
     });
+
+    if (!communityId) {
+      const communityId = await this.communityRepository.save({
+        title: CommunityTitle.DC_INSIDE,
+      });
+
+      posts.map(async (post) => {
+        await this.postRepository.save({
+          ...post,
+          community: communityId,
+        });
+      });
+      return true;
+    }
+
     posts.map(async (post) => {
       await this.postRepository.save({
         ...post,
