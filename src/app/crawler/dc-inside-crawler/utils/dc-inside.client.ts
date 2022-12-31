@@ -85,15 +85,14 @@ export class DcInsideClient implements CrawlerClient {
         postPage.on('request', (req) => {
           if (
             req.resourceType() == 'stylesheet' ||
-            req.resourceType() == 'font' ||
-            req.resourceType() == 'image' ||
-            req.resourceType() == 'media'
+            req.resourceType() == 'font'
           ) {
             req.abort();
           } else if (
             req.resourceType() == 'image' ||
             req.resourceType() == 'media'
           ) {
+            req.abort();
             hasImage = true;
           } else {
             req.continue();
