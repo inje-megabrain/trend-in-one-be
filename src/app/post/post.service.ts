@@ -49,6 +49,7 @@ export class PostService {
       {
         relations: ['community'],
         where: { community: { title: data.communityTitle } },
+        order: { uploadedAt: 'DESC' },
       },
     );
 
