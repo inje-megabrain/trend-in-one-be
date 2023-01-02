@@ -1,4 +1,4 @@
-import { Controller, Get, Param } from '@nestjs/common';
+import { Controller, Param, Post } from '@nestjs/common';
 import {
   ApiNotFoundResponse,
   ApiOkResponse,
@@ -7,16 +7,16 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { TwitterCrawlerService } from '@app/crawler/twitter-crawler/twitter-crawler.service';
 import { TopicProfileResponse } from '@app/topic/dto/topic-profile.response';
-import { TopicService } from '@app/topic/topic.service';
 import { TOPIC_ERRORS } from '@domain/errors/topic.errors';
 
-@Controller('topics')
-@ApiTags('[토픽] 핫한 주제')
-export class TopicController {
-  constructor(private readonly topicService: TopicService) {}
+@Controller('twitter-crawler')
+@ApiTags('[크롤러] TWITTER')
+export class TwitterCrawlerController {
+  constructor(private readonly twitterCrawlerService: TwitterCrawlerService) {}
 
-  @Get(':id')
+  @Post(':id')
   @ApiOperation({ summary: '인기 주제를 조회합니다.' })
   @ApiParam({
     name: 'id',
@@ -27,8 +27,9 @@ export class TopicController {
   })
   @ApiOkResponse({ type: [TopicProfileResponse] })
   @ApiNotFoundResponse({ description: TOPIC_ERRORS.WOEID_NOT_FOUND })
-  async getTopics(@Param('id') id: string): Promise<TopicProfileResponse[]> {
-    const topics = await this.topicService.getTopics(id);
-    return topics.map((topic) => new TopicProfileResponse(topic));
+  async getTopics(@Param('id') id: string): Promise<boolean> {
+    const topics = await this.twitterCrawlerService.getTopics(id);
+
+    return true;
   }
 }

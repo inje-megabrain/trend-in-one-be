@@ -3,7 +3,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { TopicProperties } from '@domain/topic/topic';
 
 export class TopicProfileResponse
-  implements Pick<TopicProperties, 'name' | 'query' | 'tweet_volume' | 'url'>
+  implements Pick<TopicProperties, 'name' | 'query' | 'tweetVolume' | 'url'>
 {
   @ApiProperty({ description: '주제명' })
   name: string;
@@ -12,16 +12,16 @@ export class TopicProfileResponse
   query: string;
 
   @ApiProperty({ description: '트윗 수' })
-  tweet_volume: number | null;
+  tweetVolume: number | null;
 
   @ApiProperty({ description: '주제 URL' })
   url: string;
   constructor(
-    topic: Pick<TopicProperties, 'name' | 'query' | 'tweet_volume' | 'url'>,
+    topic: Pick<TopicProperties, 'name' | 'query' | 'tweetVolume' | 'url'>,
   ) {
     this.name = topic.name;
     this.query = topic.query;
-    this.tweet_volume = topic.tweet_volume;
+    this.tweetVolume = topic.tweetVolume;
     this.url = topic.url;
   }
 }

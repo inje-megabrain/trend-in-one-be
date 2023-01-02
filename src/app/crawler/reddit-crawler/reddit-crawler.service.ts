@@ -4,6 +4,10 @@ import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
+import {
+  AccessDeniedException,
+  PostsNotFoundException,
+} from '@domain/errors/reddit-crawler.errors';
 import { Community } from '@domain/post/community.entity';
 import { CommunityTitle } from '@domain/post/post';
 import { Post } from '@domain/post/post.entity';
@@ -33,16 +37,21 @@ export class RedditCrawlerService {
       password: process.env.REDDIT_SECRET,
     };
 
-    const { data, status } = await this.httpService.axiosRef.request({
+    const { data } = await this.httpService.axiosRef.request({
       method: 'POST',
       url: `https://www.reddit.com/api/v1/access_token`,
       params: account,
       auth: auth,
     });
 
-    const accessToken = data.access_token;
+    if (data.error == 'invalid_grant') {
+      throw new AccessDeniedException();
+    }
+
+    const { access_token: accessToken } = data;
+
     //API 엑세스 토큰으로 크롤링 시작
-    const { data: posts, status: status2 } =
+    const { data: bestPosts, status: status2 } =
       await this.httpService.axiosRef.request({
         method: 'GET',
         url: `https://oauth.reddit.com/best`,
@@ -51,12 +60,44 @@ export class RedditCrawlerService {
         },
       });
 
+    const {
+      data: { children: posts },
+    } = bestPosts;
+
+    if (status2 !== 200) {
+      throw new PostsNotFoundException();
+    }
+
     const communityId = await this.communityRepository.findOne({
       where: { title: CommunityTitle.REDDIT },
     });
 
-    //크롤링한 데이터를 DB에 저장
-    await posts.data.children.map(async (originalPost) => {
+    if (!communityId) {
+      const communityId = await this.communityRepository.save({
+        title: CommunityTitle.REDDIT,
+      });
+
+      await posts.map(async (originalPost) => {
+        const post = {
+          title: originalPost.data.title,
+          author: originalPost.data.author,
+          views: null,
+          likes: originalPost.data.ups,
+          hasImage: originalPost.data.thumbnail !== 'self',
+          postUrl: 'https://www.reddit.com' + originalPost.data.permalink,
+          uploadedAt: new Date(originalPost.data.created_utc * 1000),
+          community: communityId,
+        } as Post;
+
+        await this.postRepository.save({
+          ...post,
+        });
+      });
+
+      return true;
+    }
+
+    await posts.map(async (originalPost) => {
       const post = {
         title: originalPost.data.title,
         author: originalPost.data.author,
@@ -67,6 +108,7 @@ export class RedditCrawlerService {
         uploadedAt: new Date(originalPost.data.created_utc * 1000),
         community: communityId,
       } as Post;
+
       await this.postRepository.save({
         ...post,
       });

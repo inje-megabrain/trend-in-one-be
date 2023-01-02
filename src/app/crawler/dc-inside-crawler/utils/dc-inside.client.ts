@@ -37,7 +37,7 @@ export class DcInsideClient implements CrawlerClient {
   }
 
   async crawlAllPosts(url: string): Promise<PostIngredients[]> {
-    const browser = await puppeteer.launch({ headless: true });
+    const browser = await puppeteer.launch({ headless: false });
     const page = await browser.newPage();
     try {
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 5000 });
@@ -64,7 +64,7 @@ export class DcInsideClient implements CrawlerClient {
             const rowIndex = parseInt(cellText);
             rowData.push(rowIndex);
           } else {
-            cellText = cellText.replace(/\t|\n/g, '');
+            cellText = cellText.replace(/[\t\n]/g, '');
             rowData.push(cellText);
           }
         }
@@ -113,7 +113,7 @@ export class DcInsideClient implements CrawlerClient {
         ).jsonValue();
 
         const post: PostIngredients = {
-          title: crawledData[1].replace(/\s\[\d+\]\s+/, ''),
+          title: crawledData[1].replace(/\s\[\d+]\s+/, ''),
           author: authorNickname,
           uploadedAt: new Date(date),
           views: Number(crawledData[4]),
@@ -126,6 +126,7 @@ export class DcInsideClient implements CrawlerClient {
         await postPage.close();
       }
     }
+    await browser.close();
     return data;
   }
 
