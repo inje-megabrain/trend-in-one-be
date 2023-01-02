@@ -28,6 +28,7 @@ export class TopicController {
   @ApiOkResponse({ type: [TopicProfileResponse] })
   @ApiNotFoundResponse({ description: TOPIC_ERRORS.WOEID_NOT_FOUND })
   async getTopics(@Param('id') id: string): Promise<TopicProfileResponse[]> {
-    return await this.topicService.getTopics(id);
+    const topics = await this.topicService.getTopics(id);
+    return topics.map((topic) => new TopicProfileResponse(topic));
   }
 }

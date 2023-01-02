@@ -5,9 +5,10 @@ export type TopicProperties = {
   id: string;
   name: string;
   url: string;
-  promoted_content: string | null;
+  promotedContent: string | null;
   query: string;
-  tweet_volume: number | null;
+  tweetVolume: number | null;
+  woeid: string;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
