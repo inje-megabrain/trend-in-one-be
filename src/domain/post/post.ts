@@ -21,6 +21,7 @@ export enum CommunityTitle {
   REDDIT = 'REDDIT',
   DC_INSIDE = 'DC_INSIDE',
   TWITTER = 'TWITTER',
+  YOUTUBE = 'YOUTUBE',
 }
 
 export type CommunityProperties = {

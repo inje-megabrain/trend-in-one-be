@@ -4,6 +4,8 @@ import { CommunityProperties, CommunityTitle } from './post';
 
 import { Post } from '@domain/post/post.entity';
 import { Topic } from '@domain/topic/topic.entity';
+import { VideoChannel } from '@domain/video/video-channel.entity';
+import { Video } from '@domain/video/video.entity';
 
 @Entity('communities')
 export class Community implements CommunityProperties {
@@ -18,4 +20,10 @@ export class Community implements CommunityProperties {
 
   @OneToMany(() => Topic, ({ community }) => community)
   topic!: Topic[];
+
+  @OneToMany(() => Video, ({ community }) => community)
+  video!: Video[];
+
+  @OneToMany(() => VideoChannel, ({ community }) => community)
+  videoChannel!: VideoChannel[];
 }
