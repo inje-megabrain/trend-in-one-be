@@ -31,6 +31,7 @@ export class PostService {
       },
       {
         relations: ['community'],
+        order: { uploadedAt: 'DESC' },
       },
     );
 
