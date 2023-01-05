@@ -6,6 +6,7 @@ import { Video } from '@domain/video/video.entity';
 export type VideoProperties = {
   id: string;
   videoId: string;
+  videoUrl?: string;
   title: string;
   description: string;
   thumbnailUri: string;
