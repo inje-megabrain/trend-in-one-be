@@ -6,10 +6,9 @@ import {
   Query,
 } from '@nestjs/common';
 
-import { Pagination } from '../../infrastructure/types/pagination.types';
-
 import { VideoProfileResponse } from '@app/video/dto/youtube-video.profile.response';
 import { VideoService } from '@app/video/video.service';
+import { Pagination } from '@infrastructure/types/pagination.types';
 
 @Controller('videos')
 export class VideoController {
