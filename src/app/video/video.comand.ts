@@ -1,5 +1,10 @@
 import { VideoProperties } from '@domain/video/video';
 
+export type VideoListQuery = {
+  page: number;
+  limit: number;
+};
+
 export type VideoProfileResponseProperties = Pick<
   VideoProperties,
   | 'id'
