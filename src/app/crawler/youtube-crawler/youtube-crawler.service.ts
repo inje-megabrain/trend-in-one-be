@@ -35,9 +35,15 @@ export class YoutubeCrawlerService {
     });
     const youtubeVideos = trendingVideos.data.items as videoIngredients[];
 
-    const community = await this.communityRepository.findOne({
+    let community = await this.communityRepository.findOne({
       where: { title: CommunityTitle.YOUTUBE },
     });
+
+    if (!community) {
+      community = await this.communityRepository.save({
+        title: CommunityTitle.YOUTUBE,
+      });
+    }
 
     youtubeVideos.map(async (videoData: videoIngredients) => {
       if (!(await this.isExistChannelId(videoData.snippet.channelId))) {
