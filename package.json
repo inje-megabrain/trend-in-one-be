@@ -37,6 +37,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@types/puppeteer": "^7.0.4",
     "dotenv": "^16.0.3",
+    "googleapis": "^110.0.0",
     "nestjs-typeorm-paginate": "^4.0.3",
     "pg": "^8.8.0",
     "pg-pool": "^3.5.2",
@@ -91,7 +92,8 @@
     "moduleNameMapper": {
       "^src/(.*)$": "<rootDir>/src/$1",
       "^@app/(.*)$": "<rootDir>/src/app/$1",
-      "@domain/(.*)$": "<rootDir>/src/domain/$1"
+      "@domain/(.*)$": "<rootDir>/src/domain/$1",
+      "@infrastructure/(.*)$": "<rootDir>/src/infrastructure/$1"
     }
   }
 }

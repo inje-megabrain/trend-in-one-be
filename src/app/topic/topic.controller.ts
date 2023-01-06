@@ -12,7 +12,7 @@ import { TopicService } from '@app/topic/topic.service';
 import { TOPIC_ERRORS } from '@domain/errors/topic.errors';
 
 @Controller('topics')
-@ApiTags('[토픽] 핫한 주제')
+@ApiTags('[콘텐츠] 핫한 주제')
 export class TopicController {
   constructor(private readonly topicService: TopicService) {}
 

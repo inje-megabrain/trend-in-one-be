@@ -13,14 +13,13 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { Pagination } from '../../infrastructure/types/pagination.types';
-
 import { PostProfileResponse } from '@app/post/dto/post-profile.response';
 import { PostService } from '@app/post/post.service';
 import { CommunityTitle } from '@domain/post/post';
+import { Pagination } from '@infrastructure/types/pagination.types';
 
 @Controller('posts')
-@ApiTags('[게시글] 게시글')
+@ApiTags('[콘텐츠] 게시글')
 export class PostController {
   constructor(private readonly postService: PostService) {}
 
