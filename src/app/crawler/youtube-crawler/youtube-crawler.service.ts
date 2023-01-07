@@ -46,18 +46,16 @@ export class YoutubeCrawlerService {
     }
 
     youtubeVideos.map(async (videoData: videoIngredients) => {
+      let channel: VideoChannel;
       if (!(await this.isExistChannelId(videoData.snippet.channelId))) {
-      }
-
-      let channel = await this.videoChannelRepository.findOne({
-        where: { channelId: videoData.snippet.channelId },
-      });
-
-      if (!channel) {
         channel = await this.videoChannelRepository.save({
           channelId: videoData.snippet.channelId,
           title: videoData.snippet.channelTitle,
           community,
+        });
+      } else {
+        channel = await this.videoChannelRepository.findOne({
+          where: { channelId: videoData.snippet.channelId },
         });
       }
 
