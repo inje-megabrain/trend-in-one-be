@@ -25,5 +25,6 @@ import { Topic } from '@domain/topic/topic.entity';
   ],
   controllers: [TwitterCrawlerController],
   providers: [TwitterCrawlerService],
+  exports: [TwitterCrawlerService],
 })
 export class TwitterCrawlerModule {}

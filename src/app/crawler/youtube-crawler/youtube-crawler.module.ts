@@ -11,5 +11,6 @@ import { Video } from '@domain/video/video.entity';
   imports: [TypeOrmModule.forFeature([Video, Community, VideoChannel])],
   controllers: [YoutubeCrawlerController],
   providers: [YoutubeCrawlerService],
+  exports: [YoutubeCrawlerService],
 })
 export class YoutubeCrawlerModule {}
