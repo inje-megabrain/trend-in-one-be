@@ -37,7 +37,7 @@ export class DcInsideClient implements CrawlerClient {
   }
 
   async crawlAllPosts(url: string): Promise<PostIngredients[]> {
-    const browser = await puppeteer.launch({ headless: false });
+    const browser = await puppeteer.launch({ headless: true });
     const page = await browser.newPage();
     try {
       await page.goto(url, { waitUntil: 'networkidle2', timeout: 5000 });
