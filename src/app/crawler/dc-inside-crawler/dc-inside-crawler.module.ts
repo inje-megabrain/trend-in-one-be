@@ -15,5 +15,6 @@ import { Post } from '@domain/post/post.entity';
     DcInsideCrawlerService,
     { provide: 'DcInsideClient', useClass: DcInsideClient },
   ],
+  exports: [DcInsideCrawlerService],
 })
 export class DcInsideCrawlerModule {}

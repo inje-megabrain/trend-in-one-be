@@ -16,7 +16,7 @@ import { Post } from '@domain/post/post.entity';
       imports: [ConfigModule],
       inject: [ConfigService],
       //TODO: baseURL 부분의 서브도메인 변경 코드를 어떻게 작성할지 고민해보기
-      useFactory: (configService: ConfigService) => ({
+      useFactory: () => ({
         baseURL: '', //https://www.reddit.com
         validateStatus: () => true,
       }),
@@ -24,5 +24,6 @@ import { Post } from '@domain/post/post.entity';
   ],
   controllers: [RedditCrawlerController],
   providers: [RedditCrawlerService],
+  exports: [RedditCrawlerService],
 })
 export class RedditCrawlerModule {}
