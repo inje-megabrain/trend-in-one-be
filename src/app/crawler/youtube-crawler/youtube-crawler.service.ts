@@ -61,10 +61,6 @@ export class YoutubeCrawlerService {
         });
       }
 
-      console.log('channel', channel);
-      console.log('video', videoData);
-      console.log();
-
       const video = await this.videoRepository.findOne({
         where: { videoId: videoData.id.videoId, etag: videoData.etag },
       });
