@@ -1,18 +1,11 @@
 import { NestFactory } from '@nestjs/core';
-import {
-  FastifyAdapter,
-  NestFastifyApplication,
-} from '@nestjs/platform-fastify';
 import { SwaggerModule } from '@nestjs/swagger';
 
 import generateSwaggerDocument from './infrastructure/swagger/swagger.generator';
 import { MainModule } from './main.module';
 
 (async () => {
-  const app = await NestFactory.create<NestFastifyApplication>(
-    MainModule,
-    new FastifyAdapter(),
-  );
+  const app = await NestFactory.create(MainModule);
 
   // CORS 해결코드
   app.enableCors({
