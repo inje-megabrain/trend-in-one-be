@@ -38,6 +38,7 @@
     "@nestjs/typeorm": "^9.0.1",
     "@types/cron": "^2.0.0",
     "@types/puppeteer": "^7.0.4",
+    "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
     "googleapis": "^110.0.0",
     "nestjs-typeorm-paginate": "^4.0.3",
