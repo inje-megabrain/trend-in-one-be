@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, Repository } from 'typeorm';
 
 import { videoIngredients } from '@app/crawler/youtube-crawler/youtube.command';
 import { Community } from '@domain/post/community.entity';
@@ -45,25 +45,34 @@ export class YoutubeCrawlerService {
       });
     }
 
-    youtubeVideos.map(async (videoData: videoIngredients) => {
-      let channel: VideoChannel;
-      if (!(await this.isExistChannelId(videoData.snippet.channelId))) {
-        channel = await this.videoChannelRepository.save({
-          channelId: videoData.snippet.channelId,
-          title: videoData.snippet.channelTitle,
-          community,
-        });
-      } else {
-        channel = await this.videoChannelRepository.findOne({
-          where: { channelId: videoData.snippet.channelId },
-        });
-      }
-
+    for (const videoData of youtubeVideos) {
+      const channel = await this.findByChannelId(videoData.snippet.channelId);
       const video = await this.videoRepository.findOne({
         where: { videoId: videoData.id.videoId, etag: videoData.etag },
       });
 
-      if (!video) {
+      if (video) {
+        continue;
+      }
+
+      if (!channel) {
+        const createdChannel = await this.videoChannelRepository.save({
+          channelId: videoData.snippet.channelId,
+          title: videoData.snippet.channelTitle,
+          community,
+        });
+
+        await this.videoRepository.save({
+          videoId: videoData.id.videoId,
+          etag: videoData.etag,
+          uploadedAt: videoData.snippet.publishedAt,
+          title: videoData.snippet.title,
+          description: videoData.snippet.description,
+          thumbnailUri: videoData.snippet.thumbnails.high.url,
+          community,
+          channel: { id: createdChannel.id },
+        });
+      } else {
         await this.videoRepository.save({
           videoId: videoData.id.videoId,
           etag: videoData.etag,
@@ -75,15 +84,20 @@ export class YoutubeCrawlerService {
           channel: { id: channel.id },
         });
       }
-    });
+    }
 
     return true;
   }
 
-  protected async isExistChannelId(channelId: string): Promise<boolean> {
-    const count = await this.videoChannelRepository.count({
+  async findByChannelId(
+    channelId: string,
+    select?: FindOptionsSelect<VideoChannel>,
+  ): Promise<VideoChannel> {
+    const channel = await this.videoChannelRepository.findOne({
       where: { channelId },
+      select,
     });
-    return count > 0;
+
+    return channel;
   }
 }
