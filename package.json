@@ -45,6 +45,8 @@
     "adminjs": "^6.7.3",
     "class-validator": "^0.14.0",
     "dotenv": "^16.0.3",
+    "express-formidable": "^1.2.0",
+    "express-session": "^1.17.3",
     "googleapis": "^110.0.0",
     "nestjs-typeorm-paginate": "^4.0.3",
     "pg": "^8.8.0",
