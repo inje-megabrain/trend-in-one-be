@@ -7,11 +7,12 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { VideoProfileResponse } from '@app/video/dto/youtube-video.profile.response';
-import { VideoService } from '@app/video/video.service';
+import { ContentsType } from '@app/contents/contents.command';
+import { VideoProfileResponse } from '@app/contents/video/dto/video.profile.response';
+import { VideoService } from '@app/contents/video/video.service';
 import { Pagination } from '@infrastructure/types/pagination.types';
 
-@Controller('videos')
+@Controller('content/videos')
 @ApiTags('[콘텐츠] 영상')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
@@ -26,7 +27,13 @@ export class VideoController {
     const { items, meta } = await this.videoService.getVideo({ page, limit });
 
     return {
-      items: items.map((item) => new VideoProfileResponse({ ...item })),
+      items: items.map(
+        (item) =>
+          new VideoProfileResponse({
+            ...item,
+            contentsType: ContentsType.VIDEO,
+          }),
+      ),
       meta,
     };
   }
