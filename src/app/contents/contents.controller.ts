@@ -4,6 +4,7 @@ import {
   ApiExtraModels,
   ApiOperation,
   ApiParam,
+  ApiTags,
   getSchemaPath,
 } from '@nestjs/swagger';
 
@@ -19,6 +20,7 @@ import { VideoProfileResponse } from '@app/contents/video/dto/video.profile.resp
 import { CommunityTitle } from '@domain/post/post';
 
 @Controller('contents')
+@ApiTags('[콘텐츠] 종합')
 export class ContentsController {
   constructor(private readonly contentsService: ContentsService) {}
 
@@ -35,11 +37,11 @@ export class ContentsController {
     example: CommunityTitle.DC_INSIDE,
   })
   @ApiOperation({
-    summary: '콘텐츠 타입에 맞는 콘텐츠를 가져옵니다.',
+    summary: '커뮤니티명으로 콘텐츠를 가져옵니다.',
   })
   @ApiExtraModels(PostProfileResponse, VideoProfileResponse)
   @ApiBody({
-    description: '콘텐츠 타입에 따라 다른 DTO를 반환합니다.',
+    description: '커뮤니티명에 따라 다른 DTO를 반환합니다.',
     schema: {
       oneOf: [
         {
