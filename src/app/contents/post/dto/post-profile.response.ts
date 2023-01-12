@@ -1,5 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
+import { ContentsType } from '@app/contents/video/contents.command';
 import { CommunityTitle, PostProperties } from '@domain/post/post';
 
 export class PostProfileResponse {
@@ -63,6 +64,14 @@ export class PostProfileResponse {
   })
   communityTitle!: CommunityTitle;
 
+  @ApiProperty({
+    description: '콘텐츠 타입에 대한 설명입니다.',
+    type: String,
+    enum: ContentsType,
+    example: ContentsType.POST,
+  })
+  contentsType: ContentsType;
+
   constructor(post: PostProperties) {
     this.id = post.id;
     this.title = post.title;
@@ -73,5 +82,6 @@ export class PostProfileResponse {
     this.postUrl = post.postUrl;
     this.uploadedAt = post.uploadedAt;
     this.communityTitle = post.community.title;
+    this.contentsType = ContentsType.POST;
   }
 }

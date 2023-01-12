@@ -1,5 +1,7 @@
 import { Community } from './community.entity';
 
+import { ContentsType } from '@app/contents/video/contents.command';
+
 export type PostProperties = {
   id: string;
   title: string;
@@ -15,6 +17,7 @@ export type PostProperties = {
   community: Community;
   communityId?: string;
   communityTitle?: CommunityTitle;
+  contentsType?: ContentsType;
 };
 
 export enum CommunityTitle {

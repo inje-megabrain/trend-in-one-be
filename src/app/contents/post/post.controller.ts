@@ -18,7 +18,7 @@ import { PostService } from '@app/contents/post/post.service';
 import { CommunityTitle } from '@domain/post/post';
 import { Pagination } from '@infrastructure/types/pagination.types';
 
-@Controller('posts')
+@Controller('content/posts')
 @ApiTags('[콘텐츠] 게시글')
 export class PostController {
   constructor(private readonly postService: PostService) {}

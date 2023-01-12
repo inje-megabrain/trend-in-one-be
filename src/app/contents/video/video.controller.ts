@@ -11,7 +11,7 @@ import { VideoProfileResponse } from '@app/contents/video/dto/youtube-video.prof
 import { VideoService } from '@app/contents/video/video.service';
 import { Pagination } from '@infrastructure/types/pagination.types';
 
-@Controller('videos')
+@Controller('content/videos')
 @ApiTags('[콘텐츠] 영상')
 export class VideoController {
   constructor(private readonly videoService: VideoService) {}
