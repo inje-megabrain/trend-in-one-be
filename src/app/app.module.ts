@@ -43,7 +43,7 @@ AdminJS.registerAdapter({
                       await tasksService.runTask(
                         task.id,
                         task['taskType.title'],
-                        5,
+                        1,
                       );
                       task.status = TaskStatus.RUNNING;
 
