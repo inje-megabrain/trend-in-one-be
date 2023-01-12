@@ -1,4 +1,4 @@
-import { VideoProfileResponseProperties } from '@app/video/video.comand';
+import { VideoProfileResponseProperties } from '@app/contents/video/video.comand';
 import { Community } from '@domain/post/community.entity';
 import { CommunityTitle } from '@domain/post/post';
 import { VideoChannel } from '@domain/video/video-channel.entity';

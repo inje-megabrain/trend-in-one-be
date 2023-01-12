@@ -13,8 +13,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { PostProfileResponse } from '@app/post/dto/post-profile.response';
-import { PostService } from '@app/post/post.service';
+import { PostProfileResponse } from '@app/contents/post/dto/post-profile.response';
+import { PostService } from '@app/contents/post/post.service';
 import { CommunityTitle } from '@domain/post/post';
 import { Pagination } from '@infrastructure/types/pagination.types';
 

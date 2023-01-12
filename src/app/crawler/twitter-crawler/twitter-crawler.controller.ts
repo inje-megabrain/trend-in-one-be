@@ -7,8 +7,8 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
+import { TopicProfileResponse } from '@app/contents/topic/dto/topic-profile.response';
 import { TwitterCrawlerService } from '@app/crawler/twitter-crawler/twitter-crawler.service';
-import { TopicProfileResponse } from '@app/topic/dto/topic-profile.response';
 import { TOPIC_ERRORS } from '@domain/errors/topic.errors';
 
 @Controller('twitter-crawler')

@@ -7,8 +7,8 @@ import {
 } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
-import { VideoProfileResponse } from '@app/video/dto/youtube-video.profile.response';
-import { VideoService } from '@app/video/video.service';
+import { VideoProfileResponse } from '@app/contents/video/dto/youtube-video.profile.response';
+import { VideoService } from '@app/contents/video/video.service';
 import { Pagination } from '@infrastructure/types/pagination.types';
 
 @Controller('videos')
