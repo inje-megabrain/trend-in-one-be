@@ -4,12 +4,9 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import AdminJS from 'adminjs';
 
-import { PostModule } from '@app/contents/post/post.module';
-import { TasksModule } from '@app/contents/tasks/tasks.module';
-import { TasksService } from '@app/contents/tasks/tasks.service';
-import { TopicModule } from '@app/contents/topic/topic.module';
-import { VideoModule } from '@app/contents/video/video.module';
-import { CrawlerModule } from '@app/crawler/crawler.module';
+import { ContentsModule } from '@app/contents/contents.module';
+import { TasksModule } from '@app/tasks/tasks.module';
+import { TasksService } from '@app/tasks/tasks.service';
 import { Community } from '@domain/post/community.entity';
 import { TaskStatus } from '@domain/task/task';
 import { Task } from '@domain/task/task.entity';
@@ -101,11 +98,8 @@ AdminJS.registerAdapter({
       }),
     }),
     ScheduleModule.forRoot(),
-    PostModule,
-    CrawlerModule,
-    TopicModule,
-    VideoModule,
     TasksModule,
+    ContentsModule,
   ],
 })
 export class AppModule {}

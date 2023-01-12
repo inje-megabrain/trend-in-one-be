@@ -3,11 +3,11 @@ import { Interval } from '@nestjs/schedule';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
-import { TaskFactory } from '@app/contents/tasks/utils/task-factory.utils';
 import { DcInsideCrawlerService } from '@app/crawler/dc-inside-crawler/dc-inside-crawler.service';
 import { RedditCrawlerService } from '@app/crawler/reddit-crawler/reddit-crawler.service';
 import { TwitterCrawlerService } from '@app/crawler/twitter-crawler/twitter-crawler.service';
 import { YoutubeCrawlerService } from '@app/crawler/youtube-crawler/youtube-crawler.service';
+import { TaskFactory } from '@app/tasks/utils/task-factory.utils';
 import { Community } from '@domain/post/community.entity';
 import { CommunityTitle } from '@domain/post/post';
 import { TaskStatus } from '@domain/task/task';
