@@ -3,9 +3,9 @@ import { ConfigModule } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { dataSourceConfig } from './data-source';
-import { InfrastructureModule } from './infrastructure/infrastructure.module';
 
 import { AppModule } from '@app/app.module';
+import { InfrastructureModule } from '@infrastructure/infrastructure.module';
 
 @Module({
   imports: [
