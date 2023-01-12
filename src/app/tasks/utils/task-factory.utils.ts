@@ -21,6 +21,7 @@ export class TaskFactory {
   async runTask(taskType: CommunityTitle, minute: number): Promise<boolean> {
     if (taskType === CommunityTitle.REDDIT) {
       const milliseconds = 1000 * 60 * minute;
+      this.logger.warn(`Interval ${taskType} created!`);
 
       const callback = () => {
         this.logger.warn(
@@ -37,6 +38,7 @@ export class TaskFactory {
 
     if (taskType === CommunityTitle.TWITTER) {
       const milliseconds = 1000 * 60 * minute;
+      this.logger.warn(`Interval ${taskType} created!`);
 
       const callback = () => {
         this.logger.warn(
@@ -52,6 +54,7 @@ export class TaskFactory {
 
     if (taskType === CommunityTitle.YOUTUBE) {
       const milliseconds = 1000 * 60 * minute;
+      this.logger.warn(`Interval ${taskType} created!`);
 
       const callback = () => {
         this.logger.warn(
@@ -67,6 +70,7 @@ export class TaskFactory {
 
     if (taskType === CommunityTitle.DC_INSIDE) {
       const milliseconds = 1000 * 60 * minute;
+      this.logger.warn(`Interval ${taskType} created!`);
 
       const callback = () => {
         this.logger.warn(
@@ -83,25 +87,21 @@ export class TaskFactory {
 
   async stopTask(taskType: CommunityTitle): Promise<boolean> {
     if (taskType === CommunityTitle.REDDIT) {
-      console.log('Reddit task stopped');
       this.schedulerRegistry.deleteInterval(taskType);
       this.logger.warn(`Interval ${taskType} deleted!`);
       return true;
     }
     if (taskType === CommunityTitle.TWITTER) {
-      console.log('Twitter task stopped');
       this.schedulerRegistry.deleteInterval(taskType);
       this.logger.warn(`Interval ${taskType} deleted!`);
       return true;
     }
     if (taskType === CommunityTitle.YOUTUBE) {
-      console.log('Youtube task stopped');
       this.schedulerRegistry.deleteInterval(taskType);
       this.logger.warn(`Interval ${taskType} deleted!`);
       return true;
     }
     if (taskType === CommunityTitle.DC_INSIDE) {
-      console.log('DC Inside task stopped');
       this.schedulerRegistry.deleteInterval(taskType);
       this.logger.warn(`Interval ${taskType} deleted!`);
       return true;
