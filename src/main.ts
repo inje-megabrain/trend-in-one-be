@@ -1,8 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { SwaggerModule } from '@nestjs/swagger';
 
-import generateSwaggerDocument from './infrastructure/swagger/swagger.generator';
 import { MainModule } from './main.module';
+
+import generateSwaggerDocument from '@infrastructure/swagger/swagger.generator';
 
 (async () => {
   const app = await NestFactory.create(MainModule);

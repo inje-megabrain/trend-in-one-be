@@ -1,6 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import { ContentsType } from '@app/contents/video/contents.command';
+import { ContentsType } from '@app/contents/contents.command';
 import { CommunityTitle, PostProperties } from '@domain/post/post';
 
 export class PostProfileResponse {

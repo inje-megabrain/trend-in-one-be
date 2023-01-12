@@ -1,4 +1,4 @@
-import { ContentsType } from '@app/contents/video/contents.command';
+import { ContentsType } from '@app/contents/contents.command';
 import { Community } from '@domain/post/community.entity';
 import { CommunityTitle } from '@domain/post/post';
 

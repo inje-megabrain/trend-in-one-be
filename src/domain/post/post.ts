@@ -1,6 +1,6 @@
 import { Community } from './community.entity';
 
-import { ContentsType } from '@app/contents/video/contents.command';
+import { ContentsType } from '@app/contents/contents.command';
 
 export type PostProperties = {
   id: string;
