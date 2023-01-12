@@ -1,14 +1,21 @@
-import { Column, Entity, OneToMany, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  BaseEntity,
+  Column,
+  Entity,
+  OneToMany,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 import { CommunityProperties, CommunityTitle } from './post';
 
 import { Post } from '@domain/post/post.entity';
+import { Task } from '@domain/task/task.entity';
 import { Topic } from '@domain/topic/topic.entity';
 import { VideoChannel } from '@domain/video/video-channel.entity';
 import { Video } from '@domain/video/video.entity';
 
 @Entity('communities')
-export class Community implements CommunityProperties {
+export class Community extends BaseEntity implements CommunityProperties {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
@@ -26,4 +33,7 @@ export class Community implements CommunityProperties {
 
   @OneToMany(() => VideoChannel, ({ community }) => community)
   videoChannel!: VideoChannel[];
+
+  @OneToMany(() => Task, ({ taskType }) => taskType)
+  task!: Task[];
 }

@@ -6,6 +6,7 @@ import { DcInsideCrawlerModule } from '@app/crawler/dc-inside-crawler/dc-inside-
 import { RedditCrawlerModule } from '@app/crawler/reddit-crawler/reddit-crawler.module';
 import { TwitterCrawlerModule } from '@app/crawler/twitter-crawler/twitter-crawler.module';
 import { YoutubeCrawlerModule } from '@app/crawler/youtube-crawler/youtube-crawler.module';
+import { TaskFactory } from '@app/tasks/utils/task-factory.utils';
 
 @Module({
   imports: [
@@ -14,6 +15,7 @@ import { YoutubeCrawlerModule } from '@app/crawler/youtube-crawler/youtube-crawl
     YoutubeCrawlerModule,
     TwitterCrawlerModule,
   ],
-  providers: [TasksService],
+  providers: [TasksService, TaskFactory],
+  exports: [TasksService],
 })
 export class TasksModule {}

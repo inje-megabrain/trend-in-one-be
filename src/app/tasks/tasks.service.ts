@@ -5,16 +5,31 @@ import { DcInsideCrawlerService } from '@app/crawler/dc-inside-crawler/dc-inside
 import { RedditCrawlerService } from '@app/crawler/reddit-crawler/reddit-crawler.service';
 import { TwitterCrawlerService } from '@app/crawler/twitter-crawler/twitter-crawler.service';
 import { YoutubeCrawlerService } from '@app/crawler/youtube-crawler/youtube-crawler.service';
+import { TaskFactory } from '@app/tasks/utils/task-factory.utils';
+import { CommunityTitle } from '@domain/post/post';
 
 @Injectable()
 export class TasksService {
   constructor(
+    private readonly taskFactory: TaskFactory,
     private readonly redditCrawlerService: RedditCrawlerService,
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
     private readonly twitterCrawlerService: TwitterCrawlerService,
     private readonly youtubeCrawlerService: YoutubeCrawlerService,
   ) {}
+
   private readonly logger = new Logger(TasksService.name);
+
+  async runTask(taskType: CommunityTitle, minute: number): Promise<boolean> {
+    const task = await this.taskFactory.runTask(taskType, minute);
+    if (!task) {
+      return false;
+    }
+  }
+
+  async stopTask(taskType: CommunityTitle): Promise<boolean> {
+    return await this.taskFactory.stopTask(taskType);
+  }
 
   @Interval(1000 * 60 * 30)
   handleInterval() {
