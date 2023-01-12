@@ -11,6 +11,7 @@ import { TasksService } from '@app/tasks/tasks.service';
 import { TopicModule } from '@app/topic/topic.module';
 import { VideoModule } from '@app/video/video.module';
 import { Community } from '@domain/post/community.entity';
+import { TaskStatus } from '@domain/task/task';
 import { Task } from '@domain/task/task.entity';
 import { User } from '@domain/user/user.entity';
 
@@ -42,19 +43,38 @@ AdminJS.registerAdapter({
                     actionType: 'record',
                     handler: async (req, res, context) => {
                       const task = context.record.params;
-                      await tasksService.runTask(task['taskType.title'], 5);
-                      return { record: context.record.toJSON() };
+                      await tasksService.runTask(
+                        task.id,
+                        task['taskType.title'],
+                        5,
+                      );
+                      task.status = TaskStatus.RUNNING;
+
+                      return {
+                        record: context.record.toJSON(),
+                      };
                     },
                     component: false,
                     icon: 'Play',
                   },
+
                   stopTask: {
                     actionType: 'record',
                     handler: async (req, res, context) => {
-                      const task = context.record.params;
-                      await tasksService.stopTask(task['taskType.title']);
-                      return { record: context.record.toJSON() };
+                      const { record } = context;
+                      const task = record.params;
+                      await tasksService.stopTask(
+                        task.id,
+                        task['taskType.title'],
+                      );
+                      task.status = TaskStatus.STOPPED;
+
+                      return {
+                        record: context.record.toJSON(),
+                        msg: 'Hello world',
+                      };
                     },
+                    guard: '크롤러를 종료하겠습니까?',
                     component: false,
                     icon: 'Stop',
                   },
