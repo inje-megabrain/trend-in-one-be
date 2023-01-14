@@ -10,13 +10,13 @@ import { CommunityTitle } from '@domain/post/post';
 @Injectable()
 export class TaskFactory {
   constructor(
-    // private readonly schedulerRegistry: SchedulerRegistry,
     private readonly redditCrawlerService: RedditCrawlerService,
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
     private readonly twitterCrawlerService: TwitterCrawlerService,
     private readonly youtubeCrawlerService: YoutubeCrawlerService,
+    private readonly schedulerRegistry: SchedulerRegistry,
   ) {}
-  private readonly schedulerRegistry = new SchedulerRegistry();
+
   private readonly logger = new Logger(TaskFactory.name);
 
   async runTask(taskType: CommunityTitle, minute: number): Promise<boolean> {
