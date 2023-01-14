@@ -9,7 +9,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { UserProperties, UserRole } from '@domain/user/user';
+import { OAuthType, UserProperties, UserRole } from '@domain/user/user';
 
 @Entity('users')
 export class User extends BaseEntity implements UserProperties {
@@ -17,7 +17,7 @@ export class User extends BaseEntity implements UserProperties {
   id: string;
 
   @Column({ unique: true })
-  name: string;
+  username: string;
 
   @Column({ unique: true })
   @IsEmail()
@@ -35,6 +35,13 @@ export class User extends BaseEntity implements UserProperties {
     default: UserRole.USER,
   })
   role: UserRole;
+
+  @Column({
+    type: 'enum',
+    enum: OAuthType,
+    nullable: true,
+  })
+  oAuthType: OAuthType | null;
 
   @CreateDateColumn()
   createdAt: Date;
