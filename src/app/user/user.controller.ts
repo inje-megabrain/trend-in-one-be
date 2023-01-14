@@ -38,7 +38,11 @@ export class UserController {
 
   @Get(':id')
   @ApiOperation({ summary: '회원의 아이디로 유저정보를 조회합니다.' })
-  @ApiParam({ name: 'id', type: ParseUUIDPipe })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a6f9cd0d-8cae-414e-bb68-ae9b6d83118ds',
+  })
   @ApiCreatedResponse({ type: UserProfileResponse })
   async getUserProfile(
     @Param('id', ParseUUIDPipe) id: string,
@@ -49,7 +53,11 @@ export class UserController {
 
   @Patch(':id')
   @ApiOperation({ summary: '회원의 정보를 수정합니다.' })
-  @ApiParam({ name: 'id', type: ParseUUIDPipe })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a6f9cd0d-8cae-414e-bb68-ae9b6d83118d',
+  })
   @ApiBody({ type: UserUpdateRequest })
   @ApiCreatedResponse({ type: UserProfileResponse })
   async updateUserProfile(
@@ -62,7 +70,11 @@ export class UserController {
 
   @Patch(':id/password')
   @ApiOperation({ summary: '회원의 비밀번호를 변경합니다.' })
-  @ApiParam({ name: 'id', type: ParseUUIDPipe })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a6f9cd0d-8cae-414e-bb68-ae9b6d83118d',
+  })
   @ApiBody({ type: UserPasswordUpdateRequest })
   @ApiCreatedResponse({ type: UserProfileResponse })
   async updateUserPassword(
@@ -74,7 +86,11 @@ export class UserController {
 
   @Delete(':id')
   @ApiOperation({ summary: '회원을 탈퇴 처리합니다.' })
-  @ApiParam({ name: 'id', type: ParseUUIDPipe })
+  @ApiParam({
+    name: 'id',
+    type: String,
+    example: 'a6f9cd0d-8cae-414e-bb68-ae9b6d83118d',
+  })
   @ApiCreatedResponse({ type: Boolean })
   async withdrawUser(@Param('id', ParseUUIDPipe) id: string): Promise<boolean> {
     return await this.userService.withdrawUser(id);
