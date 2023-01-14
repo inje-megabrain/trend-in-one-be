@@ -11,3 +11,5 @@ export type UserCreateCommand = Pick<
 >;
 
 export type UserUpdateCommand = Partial<UserCreateCommand>;
+
+export type UserPasswordUpdateCommand = Pick<UserProperties, 'password'>;
