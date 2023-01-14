@@ -2,7 +2,7 @@ import { HttpService } from '@nestjs/axios';
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, Repository } from 'typeorm';
 
 import {
   AccessDeniedException,
@@ -68,52 +68,63 @@ export class RedditCrawlerService {
       throw new PostsNotFoundException();
     }
 
+    const isCommunityExist = await this.communityRepository.findOne({
+      where: { title: CommunityTitle.REDDIT },
+    });
+
+    if (!isCommunityExist) {
+      await this.communityRepository.save({
+        title: CommunityTitle.REDDIT,
+      });
+    }
+
     const communityId = await this.communityRepository.findOne({
       where: { title: CommunityTitle.REDDIT },
     });
 
-    if (!communityId) {
-      const communityId = await this.communityRepository.save({
-        title: CommunityTitle.REDDIT,
-      });
+    for (const postData of posts) {
+      const post = await this.findByPostUrl(
+        'https://www.reddit.com' + postData.data.permalink,
+      );
 
-      await posts.map(async (originalPost) => {
-        const post = {
-          title: originalPost.data.title,
-          author: originalPost.data.author,
-          views: null,
-          likes: originalPost.data.ups,
-          hasImage: originalPost.data.thumbnail !== 'self',
-          postUrl: 'https://www.reddit.com' + originalPost.data.permalink,
-          uploadedAt: new Date(originalPost.data.created_utc * 1000),
-          community: communityId,
-        } as Post;
-
+      if (post) {
         await this.postRepository.save({
           ...post,
+          title: postData.data.title,
+          author: postData.data.author,
+          views: null,
+          likes: postData.data.ups,
+          hasImage: postData.data.thumbnail !== 'self',
+          postUrl: 'https://www.reddit.com' + postData.data.permalink,
+          uploadedAt: new Date(postData.data.created_utc * 1000),
+          community: communityId,
         });
-      });
-
-      return true;
+      } else {
+        await this.postRepository.save({
+          title: postData.data.title,
+          author: postData.data.author,
+          views: null,
+          likes: postData.data.ups,
+          hasImage: postData.data.thumbnail !== 'self',
+          postUrl: 'https://www.reddit.com' + postData.data.permalink,
+          uploadedAt: new Date(postData.data.created_utc * 1000),
+          community: communityId,
+        });
+      }
     }
 
-    await posts.map(async (originalPost) => {
-      const post = {
-        title: originalPost.data.title,
-        author: originalPost.data.author,
-        views: null,
-        likes: originalPost.data.ups,
-        hasImage: originalPost.data.thumbnail !== 'self',
-        postUrl: 'https://www.reddit.com' + originalPost.data.permalink,
-        uploadedAt: new Date(originalPost.data.created_utc * 1000),
-        community: communityId,
-      } as Post;
+    return true;
+  }
 
-      await this.postRepository.save({
-        ...post,
-      });
+  async findByPostUrl(
+    postUrl: string,
+    select?: FindOptionsSelect<Post>,
+  ): Promise<Post> {
+    const post = await this.postRepository.findOne({
+      where: { postUrl },
+      select,
     });
 
-    return true;
+    return post;
   }
 }
