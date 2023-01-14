@@ -7,8 +7,9 @@ export type UserProfile = Pick<
 
 export type UserCreateCommand = Pick<
   UserProperties,
-  'username' | 'email' | 'password' | 'role' | 'oAuthType'
->;
+  'username' | 'email' | 'password'
+> &
+  Partial<Pick<UserProperties, 'role' | 'oAuthType'>>;
 
 export type UserUpdateCommand = Partial<UserCreateCommand>;
 

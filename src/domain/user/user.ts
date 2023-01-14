@@ -3,7 +3,7 @@ export type UserProperties = {
   username: string;
   email: string;
   password: string;
-  role: UserRole;
+  role?: UserRole;
   oAuthType: OAuthType | null;
   createdAt: Date;
   updatedAt: Date;
