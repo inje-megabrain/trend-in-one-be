@@ -1,5 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Interval } from '@nestjs/schedule';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -27,8 +26,6 @@ export class TasksService {
     private readonly communityRepository: Repository<Community>,
   ) {}
 
-  private readonly logger = new Logger(TasksService.name);
-
   async runTask(
     id: string,
     taskType: CommunityTitle,
@@ -43,21 +40,5 @@ export class TasksService {
     const result = await this.taskFactory.stopTask(taskType);
     await this.taskRepository.update({ id }, { status: TaskStatus.STOPPED });
     return result;
-  }
-
-  @Interval(1000 * 60 * 30)
-  handleInterval() {
-    this.logger.debug('30분 마다 한번 호출');
-
-    Promise.all([
-      this.redditCrawlerService.crawlReddit(),
-      this.dcInsideCrawlerService.crawlDcInside(),
-      this.twitterCrawlerService.getTopics('23424868'),
-      this.youtubeCrawlerService.getVideos(),
-    ])
-      .then(() => this.logger.debug('크롤링 완료'))
-      .catch((error) => {
-        this.logger.error(error);
-      });
   }
 }
