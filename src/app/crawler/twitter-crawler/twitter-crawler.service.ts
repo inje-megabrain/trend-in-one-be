@@ -35,7 +35,6 @@ export class TwitterCrawlerService {
     await this.topicRepository.remove(originTopics);
 
     const topics = data[0].trends;
-    console.log(topics);
 
     topics.map(async (topic: any) => {
       const community = await this.communityRepository.findOne({

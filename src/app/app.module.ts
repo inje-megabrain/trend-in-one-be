@@ -4,8 +4,7 @@ import { Module } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import AdminJS from 'adminjs';
 
-import { CrawlerModule } from '@app/crawler/crawler.module';
-import { PostModule } from '@app/post/post.module';
+import { ContentsModule } from '@app/contents/contents.module';
 import { TasksModule } from '@app/tasks/tasks.module';
 import { TasksService } from '@app/tasks/tasks.service';
 import { TopicModule } from '@app/topic/topic.module';
@@ -47,7 +46,7 @@ AdminJS.registerAdapter({
                       await tasksService.runTask(
                         task.id,
                         task['taskType.title'],
-                        5,
+                        1,
                       );
                       task.status = TaskStatus.RUNNING;
 
@@ -102,12 +101,9 @@ AdminJS.registerAdapter({
       }),
     }),
     ScheduleModule.forRoot(),
-    PostModule,
-    CrawlerModule,
-    TopicModule,
-    VideoModule,
     TasksModule,
     UserModule,
+    ContentsModule,
   ],
 })
 export class AppModule {}
