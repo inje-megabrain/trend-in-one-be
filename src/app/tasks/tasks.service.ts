@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, OnModuleInit } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -13,7 +13,7 @@ import { TaskStatus } from '@domain/task/task';
 import { Task } from '@domain/task/task.entity';
 
 @Injectable()
-export class TasksService {
+export class TasksService implements OnModuleInit {
   constructor(
     private readonly taskFactory: TaskFactory,
     private readonly redditCrawlerService: RedditCrawlerService,
@@ -25,6 +25,10 @@ export class TasksService {
     @InjectRepository(Community)
     private readonly communityRepository: Repository<Community>,
   ) {}
+
+  onModuleInit() {
+    this.initializeTasks();
+  }
 
   async runTask(
     id: string,
@@ -44,6 +48,7 @@ export class TasksService {
 
   async initializeTasks(): Promise<void> {
     const tasks = await this.taskRepository.find();
+
     for (const task of tasks) {
       if (task.status === TaskStatus.RUNNING) {
         await this.runTask(task.id, task.taskType.title, task.period);
