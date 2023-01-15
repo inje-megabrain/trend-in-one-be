@@ -41,4 +41,13 @@ export class TasksService {
     await this.taskRepository.update({ id }, { status: TaskStatus.STOPPED });
     return result;
   }
+
+  async initializeTasks(): Promise<void> {
+    const tasks = await this.taskRepository.find();
+    for (const task of tasks) {
+      if (task.status === TaskStatus.RUNNING) {
+        await this.runTask(task.id, task.taskType.title, task.period);
+      }
+    }
+  }
 }
