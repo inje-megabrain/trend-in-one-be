@@ -14,12 +14,17 @@ export class TopicService {
     @InjectRepository(Community)
     private readonly communityRepository: Repository<Community>,
   ) {}
-  async getTopics(id: string): Promise<TopicProperties[]> {
-    const topics = await this.postRepository.find({
-      where: { woeid: id },
-      order: { tweetVolume: 'DESC' },
-    });
-
+  async getTopics(woeid: string): Promise<TopicProperties[]> {
+    const topics = await this.postRepository
+      .createQueryBuilder('topic')
+      .where('topic.woeid = :woeid', { woeid })
+      .orderBy('topic.tweetVolume', 'DESC', 'NULLS LAST')
+      .getMany();
     return topics;
   }
+
+  // find({
+  //        where: { woeid: id },
+  //        order: { tweetVolume: 'DESC' },
+  //      });
 }
