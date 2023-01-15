@@ -6,7 +6,7 @@ import { Repository } from 'typeorm';
 import {
   PostByCommunityListQuery,
   PostListQuery,
-} from '@app/post/post.command';
+} from '@app/contents/post/post.command';
 import { Community } from '@domain/post/community.entity';
 import { Post } from '@domain/post/post.entity';
 import { Pagination } from '@infrastructure/types/pagination.types';

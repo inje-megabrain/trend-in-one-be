@@ -31,7 +31,7 @@ export class Post implements PostProperties {
   @Column({ type: 'boolean' })
   hasImage!: boolean;
 
-  @Column()
+  @Column({ unique: true })
   postUrl!: string;
 
   @Column({ type: 'date' })

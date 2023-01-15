@@ -7,11 +7,11 @@ import {
   ApiTags,
 } from '@nestjs/swagger';
 
-import { TopicProfileResponse } from '@app/topic/dto/topic-profile.response';
-import { TopicService } from '@app/topic/topic.service';
+import { TopicProfileResponse } from '@app/contents/topic/dto/topic-profile.response';
+import { TopicService } from '@app/contents/topic/topic.service';
 import { TOPIC_ERRORS } from '@domain/errors/topic.errors';
 
-@Controller('topics')
+@Controller('content/topics')
 @ApiTags('[콘텐츠] 핫한 주제')
 export class TopicController {
   constructor(private readonly topicService: TopicService) {}

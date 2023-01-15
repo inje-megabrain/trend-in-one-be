@@ -1,5 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Interval } from '@nestjs/schedule';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -27,8 +26,6 @@ export class TasksService {
     private readonly communityRepository: Repository<Community>,
   ) {}
 
-  private readonly logger = new Logger(TasksService.name);
-
   async runTask(
     id: string,
     taskType: CommunityTitle,
@@ -45,19 +42,30 @@ export class TasksService {
     return result;
   }
 
-  @Interval(1000 * 60 * 30)
-  handleInterval() {
-    this.logger.debug('30분 마다 한번 호출');
+  async initializeTasks(): Promise<void> {
+    const communities = await this.communityRepository.find();
 
-    Promise.all([
-      this.redditCrawlerService.crawlReddit(),
-      this.dcInsideCrawlerService.crawlDcInside(),
-      this.twitterCrawlerService.getTopics('23424868'),
-      this.youtubeCrawlerService.getVideos(),
-    ])
-      .then(() => this.logger.debug('크롤링 완료'))
-      .catch((error) => {
-        this.logger.error(error);
+    for (const data of communities) {
+      const task = await this.taskRepository.findOneBy({
+        taskType: { id: data.id },
       });
+      if (!task) {
+        await this.taskRepository.save({
+          title: data.title,
+          description: `자동으로 생성된 ${data.title} 크롤러입니다.`,
+          taskType: data,
+        });
+      }
+    }
+  }
+
+  async restoreTasks(): Promise<void> {
+    const tasks = await this.taskRepository.find();
+
+    for (const task of tasks) {
+      if (task.status === TaskStatus.RUNNING) {
+        await this.runTask(task.id, task.taskType.title, task.period);
+      }
+    }
   }
 }

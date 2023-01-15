@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { paginate } from 'nestjs-typeorm-paginate';
 import { Repository } from 'typeorm';
 
-import { VideoListQuery } from '@app/video/video.comand';
+import { VideoListQuery } from '@app/contents/video/video.comand';
 import { Community } from '@domain/post/community.entity';
 import { VideoChannel } from '@domain/video/video-channel.entity';
 import { Video } from '@domain/video/video.entity';

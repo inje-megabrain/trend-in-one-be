@@ -20,6 +20,6 @@ import { Task } from '@domain/task/task.entity';
     TwitterCrawlerModule,
   ],
   providers: [TasksService, TaskFactory],
-  exports: [TasksService],
+  exports: [TasksService, TaskFactory],
 })
 export class TasksModule {}

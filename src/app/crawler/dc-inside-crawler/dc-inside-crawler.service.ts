@@ -1,6 +1,6 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
+import { FindOptionsSelect, Repository } from 'typeorm';
 
 import { PostIngredients } from '@app/crawler/dc-inside-crawler/dc-inside.command';
 import { CrawlerClient } from '@app/crawler/types/crawler.client';
@@ -21,30 +21,52 @@ export class DcInsideCrawlerService {
 
   async crawlDcInside(): Promise<boolean> {
     const posts: PostIngredients[] = await this.DcInsideClient.crawl();
+
+    const isCommunityExist = await this.communityRepository.findOne({
+      where: { title: CommunityTitle.DC_INSIDE },
+    });
+
+    if (!isCommunityExist) {
+      await this.communityRepository.save({
+        title: CommunityTitle.DC_INSIDE,
+      });
+    }
+
     const communityId = await this.communityRepository.findOne({
       where: { title: CommunityTitle.DC_INSIDE },
     });
 
-    if (!communityId) {
-      const communityId = await this.communityRepository.save({
-        title: CommunityTitle.DC_INSIDE,
-      });
+    for (const postData of posts) {
+      const post = await this.findByPostUrl(postData.postUrl);
 
-      posts.map(async (post) => {
+      if (post) {
+        if (post) {
+          await this.postRepository.save({
+            ...post,
+            ...postData,
+            community: communityId,
+          });
+        }
+      } else {
         await this.postRepository.save({
-          ...post,
+          ...postData,
           community: communityId,
         });
-      });
-      return true;
+      }
     }
 
-    posts.map(async (post) => {
-      await this.postRepository.save({
-        ...post,
-        community: communityId,
-      });
-    });
     return true;
+  }
+
+  async findByPostUrl(
+    postUrl: string,
+    select?: FindOptionsSelect<Post>,
+  ): Promise<Post> {
+    const post = await this.postRepository.findOne({
+      where: { postUrl },
+      select,
+    });
+
+    return post;
   }
 }

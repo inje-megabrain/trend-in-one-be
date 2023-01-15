@@ -1,3 +1,4 @@
+import { ContentsType } from '@app/contents/contents.command';
 import { VideoProperties } from '@domain/video/video';
 
 export type VideoListQuery = {
@@ -17,4 +18,4 @@ export type VideoProfileResponseProperties = Pick<
   | 'channelTitle'
   | 'communityTitle'
   | 'uploadedAt'
->;
+> & { contentsType: ContentsType };
