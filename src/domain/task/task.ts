@@ -4,6 +4,7 @@ export type TaskProperties = {
   id: string;
   title: string;
   description: string;
+  period: number;
   taskType: Community;
   status: TaskStatus;
 };
