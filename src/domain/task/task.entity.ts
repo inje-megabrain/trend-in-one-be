@@ -21,9 +21,9 @@ export class Task extends BaseEntity implements TaskProperties {
   @IsString()
   title: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
-  description: string;
+  description: string | null;
 
   @ManyToOne(() => Community, (community) => community, { eager: true })
   @IsEnum(CommunityTitle)
