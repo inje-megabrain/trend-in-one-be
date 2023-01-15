@@ -22,5 +22,6 @@ import { Video } from '@domain/video/video.entity';
   ],
   providers: [ContentsService],
   controllers: [ContentsController],
+  exports: [ContentsService],
 })
 export class ContentsModule {}

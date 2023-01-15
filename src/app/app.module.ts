@@ -1,11 +1,13 @@
 import * as AdminJSTypeorm from '@adminjs/typeorm';
-import { Module } from '@nestjs/common';
+import { Module, OnModuleInit } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import AdminJS from 'adminjs';
 
 import { ContentsModule } from '@app/contents/contents.module';
+import { ContentsService } from '@app/contents/contents.service';
 import { ManagementModule } from '@app/management/management.module';
 import { TasksModule } from '@app/tasks/tasks.module';
+import { TasksService } from '@app/tasks/tasks.service';
 import { UserModule } from '@app/user/user.module';
 
 AdminJS.registerAdapter({
@@ -22,4 +24,15 @@ AdminJS.registerAdapter({
     ManagementModule,
   ],
 })
-export class AppModule {}
+export class AppModule implements OnModuleInit {
+  constructor(
+    private readonly contentsService: ContentsService,
+    private readonly tasksService: TasksService,
+  ) {}
+
+  onModuleInit() {
+    this.contentsService.createAllCommunities();
+    this.tasksService.initializeTasks();
+    this.tasksService.restoreTasks();
+  }
+}

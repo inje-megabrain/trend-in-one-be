@@ -1,4 +1,4 @@
-import { Injectable, OnModuleInit } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -43,6 +43,23 @@ export class TasksService {
   }
 
   async initializeTasks(): Promise<void> {
+    const communities = await this.communityRepository.find();
+
+    for (const data of communities) {
+      const task = await this.taskRepository.findOneBy({
+        taskType: { id: data.id },
+      });
+      if (!task) {
+        await this.taskRepository.save({
+          title: data.title,
+          description: `자동으로 생성된 ${data.title} 크롤러입니다.`,
+          taskType: data,
+        });
+      }
+    }
+  }
+
+  async restoreTasks(): Promise<void> {
     const tasks = await this.taskRepository.find();
 
     for (const task of tasks) {

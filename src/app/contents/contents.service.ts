@@ -70,4 +70,26 @@ export class ContentsService {
       return topics.map((topic) => new TopicProfileResponse(topic));
     }
   }
+
+  async createAllCommunities(): Promise<void> {
+    const communityTitles = await this.getCommunityTitleArray();
+
+    for (const communityTitle of communityTitles) {
+      const community = await this.communityRepository.findOneBy({
+        title: communityTitle,
+      });
+
+      if (!community) {
+        await this.communityRepository.save({
+          title: communityTitle,
+        });
+      }
+    }
+  }
+
+  async getCommunityTitleArray(): Promise<CommunityTitle[]> {
+    return Object.keys(CommunityTitle)
+      .filter((key) => isNaN(Number(key)))
+      .map((key) => CommunityTitle[key]);
+  }
 }
