@@ -13,7 +13,7 @@ import { TaskStatus } from '@domain/task/task';
 import { Task } from '@domain/task/task.entity';
 
 @Injectable()
-export class TasksService implements OnModuleInit {
+export class TasksService {
   constructor(
     private readonly taskFactory: TaskFactory,
     private readonly redditCrawlerService: RedditCrawlerService,
@@ -25,10 +25,6 @@ export class TasksService implements OnModuleInit {
     @InjectRepository(Community)
     private readonly communityRepository: Repository<Community>,
   ) {}
-
-  onModuleInit() {
-    this.initializeTasks();
-  }
 
   async runTask(
     id: string,
