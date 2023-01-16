@@ -29,7 +29,7 @@ export class Task extends BaseEntity implements TaskProperties {
   @IsEnum(CommunityTitle)
   taskType: Community;
 
-  @Column({ default: 5 })
+  @Column({ default: 30 })
   period: number;
 
   @Column({

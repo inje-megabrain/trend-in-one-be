@@ -30,11 +30,11 @@ import { User } from '@domain/user/user.entity';
                   runTask: {
                     actionType: 'record',
                     handler: async (req, res, context) => {
-                      const task = context.record.params;
+                      const task: Task = context.record.params;
                       await tasksService.runTask(
                         task.id,
                         task['taskType.title'],
-                        5,
+                        task.period,
                       );
                       task.status = TaskStatus.RUNNING;
 
