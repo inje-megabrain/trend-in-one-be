@@ -68,7 +68,7 @@ export class YoutubeCrawlerService {
           uploadedAt: videoData.snippet.publishedAt,
           title: videoData.snippet.title,
           description: videoData.snippet.description,
-          thumbnailUri: videoData.snippet.thumbnails.high.url,
+          thumbnailUri: videoData.snippet.thumbnails.medium.url,
           community,
           channel: { id: createdChannel.id },
         });
@@ -79,7 +79,7 @@ export class YoutubeCrawlerService {
           uploadedAt: videoData.snippet.publishedAt,
           title: videoData.snippet.title,
           description: videoData.snippet.description,
-          thumbnailUri: videoData.snippet.thumbnails.high.url,
+          thumbnailUri: videoData.snippet.thumbnails.medium.url,
           community,
           channel: { id: channel.id },
         });
