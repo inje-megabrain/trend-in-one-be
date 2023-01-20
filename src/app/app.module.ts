@@ -3,6 +3,7 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import AdminJS from 'adminjs';
 
+import { AuthModule } from '@app/auth/auth.module';
 import { ContentsModule } from '@app/contents/contents.module';
 import { ContentsService } from '@app/contents/contents.service';
 import { ManagementModule } from '@app/management/management.module';
@@ -22,6 +23,7 @@ AdminJS.registerAdapter({
     UserModule,
     ContentsModule,
     ManagementModule,
+    AuthModule,
   ],
 })
 export class AppModule implements OnModuleInit {

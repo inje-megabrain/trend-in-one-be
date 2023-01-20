@@ -10,5 +10,8 @@ export const tags: SwaggerTag[] = [
   { name: '[크롤러] DC_INSIDE', description: 'DC_INSIDE 크롤러 관련 기능' },
   { name: '[크롤러] TWITTER', description: 'TWITTER 크롤러 관련 기능' },
   { name: '[크롤러] YOUTUBE', description: 'YOUTUBE 크롤러 관련 기능' },
+
+  // 로그인 관련 태그
+  { name: '[인증] 카카오 로그인', description: '카카오 로그인 관련 기능' },
 ];
 type SwaggerTag = { name: string; description: string };
