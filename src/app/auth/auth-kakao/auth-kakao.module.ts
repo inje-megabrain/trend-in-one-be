@@ -1,9 +1,20 @@
+import { HttpModule } from '@nestjs/axios';
 import { Module } from '@nestjs/common';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 
 import { AuthKakaoController } from '@app/auth/auth-kakao/auth-kakao.controller';
 
 @Module({
-  imports: [],
+  imports: [
+    HttpModule.registerAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: () => ({
+        baseURL: 'https://kauth.kakao.com',
+        validateStatus: () => true,
+      }),
+    }),
+  ],
   controllers: [AuthKakaoController],
 })
 export class AuthKakaoModule {}

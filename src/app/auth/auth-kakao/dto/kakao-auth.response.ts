@@ -1,21 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-
 export class KakaoAuthResponse {
   @ApiProperty({
-    description: '토큰 받기 요청에 필요한 인가 코드',
+    description: '카카오 REST API 호스트',
   })
-  code?: string;
-  @ApiProperty({
-    description: '요청 시 전달한 state 값과 동일한 값',
-  })
-  state?: string;
+  host: string;
 
   @ApiProperty({
-    description: '인증 실패 시 반환되는 에러 코드',
+    description: '카카오 REST API 키',
   })
-  error?: string;
+  restApiKey: string;
+
   @ApiProperty({
-    description: '인증 실패 시 반환되는 에러 메시지',
+    description: '카카오 로그인 후 리다이렉트 되는 URI',
   })
-  error_description?: string;
+  redirectUri: string;
+
+  constructor(data: { host: string; restApiKey: string; redirectUri: string }) {
+    this.host = data.host;
+    this.restApiKey = data.restApiKey;
+    this.redirectUri = data.redirectUri;
+  }
 }
