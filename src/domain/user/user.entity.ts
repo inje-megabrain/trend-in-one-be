@@ -5,11 +5,13 @@ import {
   CreateDateColumn,
   DeleteDateColumn,
   Entity,
+  OneToMany,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
 
 import { OAuthType, UserProperties, UserRole } from '@domain/user/user';
+import { UserBookmark } from '@domain/user/user-bookmark.entity';
 
 @Entity('users')
 export class User extends BaseEntity implements UserProperties {
@@ -42,6 +44,9 @@ export class User extends BaseEntity implements UserProperties {
     nullable: true,
   })
   oAuthType: OAuthType | null;
+
+  @OneToMany(() => UserBookmark, (userBookmark) => userBookmark)
+  bookmarks: UserBookmark[];
 
   @CreateDateColumn()
   createdAt: Date;

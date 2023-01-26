@@ -1,3 +1,5 @@
+import { PostProperties } from '@domain/post/post';
+
 export type UserProperties = {
   id: string;
   username: string;
@@ -19,3 +21,12 @@ export enum OAuthType {
   KAKAO = 'KAKAO',
   GOOGLE = 'GOOGLE',
 }
+
+export type UserBookmarkProperties = {
+  id: string;
+  user: UserProperties;
+  post: PostProperties;
+  createdAt: Date;
+  updatedAt: Date;
+  deletedAt: Date | null;
+};

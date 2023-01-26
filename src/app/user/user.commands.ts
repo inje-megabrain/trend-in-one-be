@@ -1,3 +1,4 @@
+import { PostProperties } from '@domain/post/post';
 import { UserProperties } from '@domain/user/user';
 
 export type UserProfile = Pick<
@@ -14,3 +15,11 @@ export type UserCreateCommand = Pick<
 export type UserUpdateCommand = Partial<UserCreateCommand>;
 
 export type UserPasswordUpdateCommand = Pick<UserProperties, 'password'>;
+
+export type UserBookmarkCommand = {
+  id: string;
+  userId: string;
+  postId: string;
+  post: PostProperties;
+  updatedAt: Date;
+};
