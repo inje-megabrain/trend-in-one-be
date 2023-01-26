@@ -15,6 +15,8 @@ export class UserBookmarkService {
     private readonly userService: UserAccountService,
   ) {}
 
+  //TODO: 게시글만 북마크가 가능함, 영상도 북마크 기능 구현 필요
+
   async getUserBookmarks(userId: string): Promise<UserBookmark[]> {
     const user = await this.userService.findById(userId);
     const bookmarks = await this.bookmarkRepository.find({
