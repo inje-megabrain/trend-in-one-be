@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -12,7 +13,7 @@ import { Community } from '@domain/post/community.entity';
 import { TopicProperties } from '@domain/topic/topic';
 
 @Entity('topics')
-export class Topic implements TopicProperties {
+export class Topic extends BaseEntity implements TopicProperties {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 
