@@ -1,6 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { google } from 'googleapis';
+import * as he from 'he';
 import { FindOptionsSelect, Repository } from 'typeorm';
 
 import { videoIngredients } from '@app/crawler/youtube-crawler/youtube.command';
@@ -55,6 +56,8 @@ export class YoutubeCrawlerService {
         continue;
       }
 
+      const normalizedVideo = await this.normalizeVideo(videoData);
+
       if (!channel) {
         const createdChannel = await this.videoChannelRepository.save({
           channelId: videoData.snippet.channelId,
@@ -63,23 +66,13 @@ export class YoutubeCrawlerService {
         });
 
         await this.videoRepository.save({
-          videoId: videoData.id.videoId,
-          etag: videoData.etag,
-          uploadedAt: videoData.snippet.publishedAt,
-          title: videoData.snippet.title,
-          description: videoData.snippet.description,
-          thumbnailUri: videoData.snippet.thumbnails.medium.url,
+          ...normalizedVideo,
           community,
           channel: { id: createdChannel.id },
         });
       } else {
         await this.videoRepository.save({
-          videoId: videoData.id.videoId,
-          etag: videoData.etag,
-          uploadedAt: videoData.snippet.publishedAt,
-          title: videoData.snippet.title,
-          description: videoData.snippet.description,
-          thumbnailUri: videoData.snippet.thumbnails.medium.url,
+          ...normalizedVideo,
           community,
           channel: { id: channel.id },
         });
@@ -87,6 +80,20 @@ export class YoutubeCrawlerService {
     }
 
     return true;
+  }
+
+  async normalizeVideo(data: videoIngredients): Promise<Video> {
+    const decodedTitle = he.decode(data.snippet.title);
+    const video = await this.videoRepository.create({
+      videoId: data.id.videoId,
+      etag: data.etag,
+      title: decodedTitle,
+      description: data.snippet.description,
+      thumbnailUri: data.snippet.thumbnails.medium.url,
+      uploadedAt: data.snippet.publishedAt,
+    });
+
+    return video;
   }
 
   async findByChannelId(
