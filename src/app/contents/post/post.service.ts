@@ -55,4 +55,15 @@ export class PostService {
 
     return { items, meta };
   }
+
+  async findById(id: string): Promise<Post> {
+    const post = await this.postRepository.findOne({
+      where: { id },
+      relations: ['community'],
+    });
+    if (!post) {
+      throw new Error('Post not found');
+    }
+    return post;
+  }
 }

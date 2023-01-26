@@ -18,8 +18,7 @@ export type UserPasswordUpdateCommand = Pick<UserProperties, 'password'>;
 
 export type UserBookmarkCommand = {
   id: string;
-  userId: string;
-  postId: string;
+  user: UserProperties;
   post: PostProperties;
   updatedAt: Date;
 };
