@@ -2,20 +2,15 @@ import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
 
-import { PostService } from '@app/contents/post/post.service';
-import { UserCreateRequest } from '@app/user/dto/user-create.request';
-import { UserUpdateRequest } from '@app/user/dto/user-update.request';
-import { UserBookmark } from '@domain/user/user-bookmark.entity';
+import { UserCreateRequest } from '@app/user/user-account/dto/user-create.request';
+import { UserUpdateRequest } from '@app/user/user-account/dto/user-update.request';
 import { User } from '@domain/user/user.entity';
 
 @Injectable()
-export class UserService {
+export class UserAccountService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
-    @InjectRepository(UserBookmark)
-    private readonly bookmarkRepository: Repository<UserBookmark>,
-    private readonly postService: PostService,
   ) {}
 
   async joinUser(data: UserCreateRequest): Promise<User> {
@@ -64,17 +59,6 @@ export class UserService {
     return affected > 0;
   }
 
-  async getUserBookmarks(userId: string): Promise<UserBookmark[]> {
-    const user = await this.findById(userId);
-    const bookmarks = await this.bookmarkRepository
-      .createQueryBuilder('bookmark')
-      .select(['bookmark.id', 'post.id', 'user.id'])
-      .where('bookmark.userId = :id', { id: user.id })
-      .getMany();
-
-    return bookmarks;
-  }
-
   async findById(
     id: string,
     relations?: FindOptionsRelations<User>,
@@ -105,36 +89,5 @@ export class UserService {
     if (count > 0) {
       throw new Error('Email already exists');
     }
-  }
-
-  async addUserBookmark(id: string, postId: string): Promise<UserBookmark> {
-    const user = await this.findById(id);
-    const post = await this.postService.findById(postId);
-
-    const bookmark = await this.bookmarkRepository.findOne({
-      where: { user: { id: user.id }, post: { id: post.id } },
-    });
-    if (bookmark) {
-      return bookmark;
-    }
-
-    return await this.bookmarkRepository.save({
-      user,
-      post,
-    });
-  }
-
-  async removeUserBookmark(id: string, postId: string): Promise<boolean> {
-    const user = await this.findById(id);
-    const post = await this.postService.findById(postId);
-
-    const bookmark = await this.bookmarkRepository.findOne({
-      where: { user: { id: user.id }, post: { id: post.id } },
-    });
-    if (!bookmark) {
-      throw new Error('Bookmark not found');
-    }
-    const { affected } = await this.bookmarkRepository.delete(bookmark.id);
-    return affected > 0;
   }
 }

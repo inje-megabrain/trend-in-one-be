@@ -10,7 +10,7 @@ import { ContentsService } from '@app/contents/contents.service';
 import { ManagementModule } from '@app/management/management.module';
 import { TasksModule } from '@app/tasks/tasks.module';
 import { TasksService } from '@app/tasks/tasks.service';
-import { UserModule } from '@app/user/user.module';
+import { UserMainModule } from '@app/user/user-main.module';
 
 AdminJS.registerAdapter({
   Resource: AdminJSTypeorm.Resource,
@@ -21,7 +21,7 @@ AdminJS.registerAdapter({
   imports: [
     ScheduleModule.forRoot(),
     TasksModule,
-    UserModule,
+    UserMainModule,
     ContentsModule,
     ManagementModule,
     AuthModule,

@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
-import { UserProfile } from '@app/user/user.commands';
+import { UserProfile } from '@app/user/user-account/user.commands';
 import { OAuthType, UserRole } from '@domain/user/user';
 
 export class UserProfileResponse implements UserProfile {
