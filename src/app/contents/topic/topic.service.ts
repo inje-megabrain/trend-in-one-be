@@ -37,9 +37,4 @@ export class TopicService {
 
     return [...tweetVolumeExistTopics, ...tweetVolumeNotExistTopics];
   }
-
-  // find({
-  //        where: { woeid: id },
-  //        order: { tweetVolume: 'DESC' },
-  //      });
 }
