@@ -34,9 +34,9 @@ export class AppModule implements OnModuleInit {
     private readonly tasksService: TasksService,
   ) {}
 
-  onModuleInit() {
-    this.contentsService.createAllCommunities();
-    this.tasksService.initializeTasks();
-    this.tasksService.restoreTasks();
+  async onModuleInit(): Promise<void> {
+    await this.contentsService.createAllCommunities();
+    await this.tasksService.initializeTasks();
+    await this.tasksService.restoreTasks();
   }
 }
