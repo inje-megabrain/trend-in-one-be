@@ -47,6 +47,6 @@ export class Post extends BaseEntity implements PostProperties {
   @DeleteDateColumn({ nullable: true })
   deletedAt!: Date | null;
 
-  @ManyToOne(() => Community, (community) => community)
+  @ManyToOne(() => Community, (community) => community, { eager: true })
   community!: Community;
 }

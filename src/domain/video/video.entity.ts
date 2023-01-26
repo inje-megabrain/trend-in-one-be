@@ -33,7 +33,7 @@ export class Video extends BaseEntity implements VideoProperties {
   @ManyToOne(() => VideoChannel, (videoChannel) => videoChannel)
   channel: VideoChannel | null;
 
-  @ManyToOne(() => Community, (community) => community)
+  @ManyToOne(() => Community, (community) => community, { eager: true })
   community: Community;
 
   @Column()
