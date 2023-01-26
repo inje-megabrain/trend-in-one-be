@@ -13,17 +13,19 @@ import {
   ApiCreatedResponse,
   ApiOperation,
   ApiParam,
+  ApiTags,
 } from '@nestjs/swagger';
 
-import { UserCreateRequest } from '@app/user/dto/user-create.request';
-import { UserPasswordUpdateRequest } from '@app/user/dto/user-password-update.request';
-import { UserProfileResponse } from '@app/user/dto/user-profile.response';
-import { UserUpdateRequest } from '@app/user/dto/user-update.request';
-import { UserService } from '@app/user/user.service';
+import { UserCreateRequest } from '@app/user/user-account/dto/user-create.request';
+import { UserPasswordUpdateRequest } from '@app/user/user-account/dto/user-password-update.request';
+import { UserProfileResponse } from '@app/user/user-account/dto/user-profile.response';
+import { UserUpdateRequest } from '@app/user/user-account/dto/user-update.request';
+import { UserAccountService } from '@app/user/user-account/user-account.service';
 
 @Controller('users')
-export class UserController {
-  constructor(private readonly userService: UserService) {}
+@ApiTags('[계정] 회원')
+export class UserAccountController {
+  constructor(private readonly userService: UserAccountService) {}
 
   @Post()
   @ApiOperation({ summary: '새로운 회원을 가입처리합니다.' })

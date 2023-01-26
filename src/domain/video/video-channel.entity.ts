@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -14,7 +15,7 @@ import { VideoChannelProperties } from '@domain/video/video';
 import { Video } from '@domain/video/video.entity';
 
 @Entity('video_channels')
-export class VideoChannel implements VideoChannelProperties {
+export class VideoChannel extends BaseEntity implements VideoChannelProperties {
   @PrimaryGeneratedColumn('uuid')
   id!: string;
 

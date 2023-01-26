@@ -3,13 +3,14 @@ import { Module, OnModuleInit } from '@nestjs/common';
 import { ScheduleModule } from '@nestjs/schedule';
 import AdminJS from 'adminjs';
 
+import { AppController } from '@app/app.controller';
 import { AuthModule } from '@app/auth/auth.module';
 import { ContentsModule } from '@app/contents/contents.module';
 import { ContentsService } from '@app/contents/contents.service';
 import { ManagementModule } from '@app/management/management.module';
 import { TasksModule } from '@app/tasks/tasks.module';
 import { TasksService } from '@app/tasks/tasks.service';
-import { UserModule } from '@app/user/user.module';
+import { UserMainModule } from '@app/user/user-main.module';
 
 AdminJS.registerAdapter({
   Resource: AdminJSTypeorm.Resource,
@@ -20,11 +21,12 @@ AdminJS.registerAdapter({
   imports: [
     ScheduleModule.forRoot(),
     TasksModule,
-    UserModule,
+    UserMainModule,
     ContentsModule,
     ManagementModule,
     AuthModule,
   ],
+  controllers: [AppController],
 })
 export class AppModule implements OnModuleInit {
   constructor(
@@ -32,9 +34,9 @@ export class AppModule implements OnModuleInit {
     private readonly tasksService: TasksService,
   ) {}
 
-  onModuleInit() {
-    this.contentsService.createAllCommunities();
-    this.tasksService.initializeTasks();
-    this.tasksService.restoreTasks();
+  async onModuleInit(): Promise<void> {
+    await this.contentsService.createAllCommunities();
+    await this.tasksService.initializeTasks();
+    await this.tasksService.restoreTasks();
   }
 }

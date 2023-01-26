@@ -15,16 +15,26 @@ export class TopicService {
     private readonly communityRepository: Repository<Community>,
   ) {}
   async getTopics(woeid: string): Promise<TopicProperties[]> {
-    const topics = await this.postRepository
+    const tweetVolumeExistTopics = await this.postRepository
       .createQueryBuilder('topic')
       .where('topic.woeid = :woeid', { woeid })
-      .orderBy('topic.tweetVolume', 'DESC', 'NULLS LAST')
+      .where('topic.tweetVolume IS NOT NULL')
+      .orderBy('topic.tweetVolume', 'DESC')
+      .limit(4)
       .getMany();
-    return topics;
-  }
 
-  // find({
-  //        where: { woeid: id },
-  //        order: { tweetVolume: 'DESC' },
-  //      });
+    if (tweetVolumeExistTopics.length >= 4) {
+      return tweetVolumeExistTopics;
+    }
+
+    const tweetVolumeNotExistTopics = await this.postRepository
+      .createQueryBuilder('topic')
+      .where('topic.woeid = :woeid', { woeid })
+      .where('topic.tweetVolume IS NULL')
+      .orderBy('topic.uploadedAt', 'DESC')
+      .limit(4 - tweetVolumeExistTopics.length)
+      .getMany();
+
+    return [...tweetVolumeExistTopics, ...tweetVolumeNotExistTopics];
+  }
 }

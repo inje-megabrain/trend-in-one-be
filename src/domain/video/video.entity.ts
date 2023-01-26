@@ -1,4 +1,5 @@
 import {
+  BaseEntity,
   Column,
   CreateDateColumn,
   DeleteDateColumn,
@@ -13,7 +14,7 @@ import { VideoProperties } from '@domain/video/video';
 import { VideoChannel } from '@domain/video/video-channel.entity';
 
 @Entity('videos')
-export class Video implements VideoProperties {
+export class Video extends BaseEntity implements VideoProperties {
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
@@ -32,7 +33,7 @@ export class Video implements VideoProperties {
   @ManyToOne(() => VideoChannel, (videoChannel) => videoChannel)
   channel: VideoChannel | null;
 
-  @ManyToOne(() => Community, (community) => community)
+  @ManyToOne(() => Community, (community) => community, { eager: true })
   community: Community;
 
   @Column()

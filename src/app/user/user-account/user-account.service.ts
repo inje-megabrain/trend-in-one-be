@@ -1,13 +1,13 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsSelect, Repository } from 'typeorm';
+import { FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
 
-import { UserCreateRequest } from '@app/user/dto/user-create.request';
-import { UserUpdateRequest } from '@app/user/dto/user-update.request';
+import { UserCreateRequest } from '@app/user/user-account/dto/user-create.request';
+import { UserUpdateRequest } from '@app/user/user-account/dto/user-update.request';
 import { User } from '@domain/user/user.entity';
 
 @Injectable()
-export class UserService {
+export class UserAccountService {
   constructor(
     @InjectRepository(User)
     private readonly userRepository: Repository<User>,
@@ -59,10 +59,15 @@ export class UserService {
     return affected > 0;
   }
 
-  async findById(id: string, select?: FindOptionsSelect<User>): Promise<User> {
+  async findById(
+    id: string,
+    relations?: FindOptionsRelations<User>,
+    select?: FindOptionsSelect<User>,
+  ): Promise<User> {
     const user = this.userRepository.findOne({
       where: { id },
       select,
+      relations,
     });
 
     if (!user) {

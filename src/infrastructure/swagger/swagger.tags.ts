@@ -13,5 +13,9 @@ export const tags: SwaggerTag[] = [
 
   // 로그인 관련 태그
   { name: '[인증] 카카오 로그인', description: '카카오 로그인 관련 기능' },
+
+  // 회원 관련 태그
+  { name: '[계정] 회원', description: '계정 관련 기능' },
+  { name: '[계정] 북마크', description: '계정 관련 기능' },
 ];
 type SwaggerTag = { name: string; description: string };

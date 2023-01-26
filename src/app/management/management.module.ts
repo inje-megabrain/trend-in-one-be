@@ -4,9 +4,13 @@ import { Module } from '@nestjs/common';
 import { TasksModule } from '@app/tasks/tasks.module';
 import { TasksService } from '@app/tasks/tasks.service';
 import { Community } from '@domain/post/community.entity';
+import { Post } from '@domain/post/post.entity';
 import { TaskStatus } from '@domain/task/task';
 import { Task } from '@domain/task/task.entity';
+import { Topic } from '@domain/topic/topic.entity';
 import { User } from '@domain/user/user.entity';
+import { VideoChannel } from '@domain/video/video-channel.entity';
+import { Video } from '@domain/video/video.entity';
 
 @Module({
   imports: [
@@ -18,10 +22,22 @@ import { User } from '@domain/user/user.entity';
           rootPath: '/admin',
           resources: [
             {
+              resource: Post,
+            },
+            {
+              resource: Video,
+            },
+            {
+              resource: Topic,
+            },
+            {
               resource: User,
             },
             {
               resource: Community,
+            },
+            {
+              resource: VideoChannel,
             },
             {
               resource: Task,

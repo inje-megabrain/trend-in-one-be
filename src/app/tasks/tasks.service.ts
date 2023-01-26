@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -14,6 +14,7 @@ import { Task } from '@domain/task/task.entity';
 
 @Injectable()
 export class TasksService {
+  private readonly logger = new Logger(TasksService.name);
   constructor(
     private readonly taskFactory: TaskFactory,
     private readonly redditCrawlerService: RedditCrawlerService,
@@ -64,6 +65,7 @@ export class TasksService {
 
     for (const task of tasks) {
       if (task.status === TaskStatus.RUNNING) {
+        this.logger.log(`Restore ${task.title} task`);
         await this.runTask(task.id, task.taskType.title, task.period);
       }
     }

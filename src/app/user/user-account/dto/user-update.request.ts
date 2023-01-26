@@ -1,32 +1,19 @@
 import { ApiProperty } from '@nestjs/swagger';
-import {
-  IsEmail,
-  IsEnum,
-  IsNotEmpty,
-  IsOptional,
-  IsString,
-  Length,
-} from 'class-validator';
+import { IsEmail, IsEnum, IsOptional, IsString } from 'class-validator';
 
-import { UserCreateCommand } from '@app/user/user.commands';
+import { UserUpdateCommand } from '@app/user/user-account/user.commands';
 import { OAuthType, UserRole } from '@domain/user/user';
 
-export class UserCreateRequest implements UserCreateCommand {
+export class UserUpdateRequest implements UserUpdateCommand {
   @ApiProperty({ description: '유저명', example: 'test' })
   @IsString()
-  @IsNotEmpty()
-  username: string;
+  @IsOptional()
+  username?: string;
 
   @ApiProperty({ description: '이메일', example: 'test@example.com' })
   @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  @ApiProperty({ description: '비밀번호', example: '123456' })
-  @IsString()
-  @IsNotEmpty()
-  @Length(5)
-  password: string;
+  @IsOptional()
+  email?: string;
 
   @ApiProperty({ description: '권한', example: UserRole.USER })
   @IsEnum(UserRole)
