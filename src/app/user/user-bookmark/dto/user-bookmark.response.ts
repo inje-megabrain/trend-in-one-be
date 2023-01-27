@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsDate, IsNotEmpty, IsString } from 'class-validator';
 
 import { PostProfileResponse } from '@app/contents/post/dto/post-profile.response';
-import { UserBookmarkCommand } from '@app/user/user-account/user.commands';
+import { UserBookmarkCommand } from '@app/user/user-bookmark/user-bookmark.commands';
 
 export class UserBookmarkResponse {
   @ApiProperty({
