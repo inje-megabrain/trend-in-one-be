@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import {
   ApiOkResponse,
   ApiOperation,
@@ -24,11 +24,5 @@ export class DcInsideCrawlerController {
   @Post()
   async crawlDcInside(): Promise<boolean> {
     return this.dcInsideCrawlerService.crawlDcInside();
-  }
-
-  //TODO: 크롤러의 현재 상태를 받아오는 API
-  @Get()
-  async getCrawlerStatus(): Promise<boolean> {
-    return true;
   }
 }

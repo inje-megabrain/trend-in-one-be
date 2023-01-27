@@ -1,4 +1,4 @@
-import { Controller, Get, Post } from '@nestjs/common';
+import { Controller, Post } from '@nestjs/common';
 import { ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
 
 import { RedditCrawlerService } from '@app/crawler/reddit-crawler/reddit-crawler.service';
@@ -13,11 +13,5 @@ export class RedditCrawlerController {
   @Post()
   async crawlReddit(): Promise<boolean> {
     return this.redditCrawlerService.crawlReddit();
-  }
-
-  //TODO: 크롤러의 현재 상태를 받아오는 API
-  @Get()
-  async getCrawlerStatus(): Promise<boolean> {
-    return true;
   }
 }
