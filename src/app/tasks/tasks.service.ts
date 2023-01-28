@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,6 +20,7 @@ export class TasksService {
     private readonly redditCrawlerService: RedditCrawlerService,
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
     private readonly twitterCrawlerService: TwitterCrawlerService,
+    @Inject(forwardRef(() => YoutubeCrawlerService))
     private readonly youtubeCrawlerService: YoutubeCrawlerService,
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
