@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
@@ -20,6 +20,7 @@ export class TasksService {
     private readonly redditCrawlerService: RedditCrawlerService,
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
     private readonly twitterCrawlerService: TwitterCrawlerService,
+    @Inject(forwardRef(() => YoutubeCrawlerService))
     private readonly youtubeCrawlerService: YoutubeCrawlerService,
     @InjectRepository(Task)
     private readonly taskRepository: Repository<Task>,
@@ -37,9 +38,18 @@ export class TasksService {
     return true;
   }
 
-  async stopTask(id: string, taskType: CommunityTitle): Promise<boolean> {
+  async stopTask(taskType: CommunityTitle, id?: string): Promise<boolean> {
     const result = await this.taskFactory.stopTask(taskType);
-    await this.taskRepository.update({ id }, { status: TaskStatus.STOPPED });
+    if (id) {
+      await this.taskRepository.update({ id }, { status: TaskStatus.STOPPED });
+      return result;
+    }
+
+    const task = await this.findTaskByCommunityTitle(taskType);
+    await this.taskRepository.update(
+      { id: task.id },
+      { status: TaskStatus.STOPPED },
+    );
     return result;
   }
 
@@ -69,5 +79,12 @@ export class TasksService {
         await this.runTask(task.id, task.taskType.title, task.period);
       }
     }
+  }
+
+  async findTaskByCommunityTitle(taskType: CommunityTitle): Promise<Task> {
+    const task = await this.taskRepository.findOneBy({
+      taskType: { title: taskType },
+    });
+    return task;
   }
 }

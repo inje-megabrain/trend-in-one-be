@@ -31,7 +31,7 @@ export class TopicService {
       .createQueryBuilder('topic')
       .where('topic.woeid = :woeid', { woeid })
       .where('topic.tweetVolume IS NULL')
-      .orderBy('topic.uploadedAt', 'DESC')
+      .orderBy('topic.createdAt', 'DESC')
       .limit(4 - tweetVolumeExistTopics.length)
       .getMany();
 

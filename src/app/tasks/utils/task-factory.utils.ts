@@ -1,4 +1,4 @@
-import { Injectable, Logger } from '@nestjs/common';
+import { forwardRef, Inject, Injectable, Logger } from '@nestjs/common';
 import { SchedulerRegistry } from '@nestjs/schedule';
 
 import { DcInsideCrawlerService } from '@app/crawler/dc-inside-crawler/dc-inside-crawler.service';
@@ -13,6 +13,7 @@ export class TaskFactory {
     private readonly redditCrawlerService: RedditCrawlerService,
     private readonly dcInsideCrawlerService: DcInsideCrawlerService,
     private readonly twitterCrawlerService: TwitterCrawlerService,
+    @Inject(forwardRef(() => YoutubeCrawlerService))
     private readonly youtubeCrawlerService: YoutubeCrawlerService,
     private readonly schedulerRegistry: SchedulerRegistry,
   ) {}

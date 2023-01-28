@@ -8,11 +8,7 @@ import {
   getSchemaPath,
 } from '@nestjs/swagger';
 
-import {
-  ContentsResponse,
-  ContentsType,
-  PostsResponse,
-} from '@app/contents/contents.command';
+import { ContentsResponse, ContentsType } from '@app/contents/contents.command';
 import { ContentsService } from '@app/contents/contents.service';
 import { PostProfileResponse } from '@app/contents/post/dto/post-profile.response';
 import { TopicProfileResponse } from '@app/contents/topic/dto/topic-profile.response';
@@ -23,10 +19,6 @@ import { CommunityTitle } from '@domain/post/post';
 @ApiTags('[콘텐츠] 종합')
 export class ContentsController {
   constructor(private readonly contentsService: ContentsService) {}
-
-  async getAllContents(): Promise<PostsResponse[]> {
-    return await this.contentsService.getAllContents();
-  }
 
   @Post('community/:communityType')
   @ApiParam({

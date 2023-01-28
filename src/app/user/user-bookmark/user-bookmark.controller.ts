@@ -8,7 +8,7 @@ import {
 } from '@nestjs/common';
 import { ApiOperation, ApiParam, ApiTags } from '@nestjs/swagger';
 
-import { UserBookmarkResponse } from '@app/user/user-account/dto/user-bookmark.response';
+import { UserBookmarkResponse } from '@app/user/user-bookmark/dto/user-bookmark.response';
 import { UserBookmarkService } from '@app/user/user-bookmark/user-bookmark.service';
 
 @Controller('bookmarks/:userId')

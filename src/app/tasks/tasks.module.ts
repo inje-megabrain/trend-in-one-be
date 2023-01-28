@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { TasksService } from './tasks.service';
@@ -16,7 +16,7 @@ import { Task } from '@domain/task/task.entity';
     TypeOrmModule.forFeature([Community, Task]),
     RedditCrawlerModule,
     DcInsideCrawlerModule,
-    YoutubeCrawlerModule,
+    forwardRef(() => YoutubeCrawlerModule),
     TwitterCrawlerModule,
   ],
   providers: [TasksService, TaskFactory],
