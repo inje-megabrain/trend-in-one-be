@@ -68,8 +68,8 @@ import { Video } from '@domain/video/video.entity';
                       const { record } = context;
                       const task = record.params;
                       await tasksService.stopTask(
-                        task.id,
                         task['taskType.title'],
+                        task.id,
                       );
                       task.status = TaskStatus.STOPPED;
 
