@@ -1,7 +1,7 @@
 import { ApiProperty } from '@nestjs/swagger';
 import { IsNotEmpty, IsString } from 'class-validator';
 
-import { UserRequestCommand } from '@app/auth/auth-kakao/kakao.command';
+import { UserRequestCommand } from '@app/auth/commands/kakao.command';
 
 export class KakaoAuthRequest implements UserRequestCommand {
   @ApiProperty({ description: '카카오 로그인 요청 코드' })

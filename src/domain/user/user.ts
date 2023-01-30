@@ -4,9 +4,9 @@ export type UserProperties = {
   id: string;
   username: string;
   email: string;
-  password: string;
+  password?: string | null;
   role?: UserRole;
-  oAuthType: OAuthType | null;
+  authType: UserAuthType;
   createdAt: Date;
   updatedAt: Date;
   deletedAt: Date | null;
@@ -17,7 +17,7 @@ export enum UserRole {
   USER = 'USER',
 }
 
-export enum OAuthType {
+export enum UserAuthType {
   KAKAO = 'KAKAO',
   GOOGLE = 'GOOGLE',
 }

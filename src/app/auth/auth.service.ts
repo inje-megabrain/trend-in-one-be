@@ -1,14 +1,22 @@
 import { HttpService } from '@nestjs/axios';
 import { Injectable, Logger, UnauthorizedException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
+import { JwtService } from '@nestjs/jwt';
 
-import { KakaoAuthUserResponse } from '@app/auth/auth-kakao/dto/kakao-auth-user.response';
-import { UserRequestCommand } from '@app/auth/auth-kakao/kakao.command';
+import { UserRequestCommand } from '@app/auth/commands/kakao.command';
+import { KakaoAuthUserResponse } from '@app/auth/dto/kakao-auth-user.response';
+import { TokenResponse } from '@app/auth/dto/token.response';
+import { ACCESS_TOKEN_EXPIRE, REFRESH_TOKEN_EXPIRE } from '@app/constants';
+import { UserAccountService } from '@app/user/user-account/user-account.service';
+import { UserAuthType } from '@domain/user/user';
+import { JwtSubjectType } from '@infrastructure/types/jwt.types';
 
 @Injectable()
-export class AuthKakaoService {
-  private readonly logger = new Logger(AuthKakaoService.name);
+export class AuthService {
+  private readonly logger = new Logger(AuthService.name);
   constructor(
+    private readonly jwtService: JwtService,
+    private readonly userAccountService: UserAccountService,
     private readonly httpService: HttpService,
     private readonly configService: ConfigService,
   ) {}
@@ -35,7 +43,6 @@ export class AuthKakaoService {
         await this.httpService.axiosRef.request({
           method: 'POST',
           url: `https://kauth.kakao.com/oauth/token`,
-          timeout: 30000,
           headers,
           data: body,
         });
@@ -49,9 +56,9 @@ export class AuthKakaoService {
         const responseUserInfo = await this.httpService.axiosRef.request({
           method: 'GET',
           url: `https://kapi.kakao.com/v2/user/me`,
-          timeout: 30000,
           headers: headerUserInfo,
         });
+
         if (responseUserInfo.status === 200) {
           return new KakaoAuthUserResponse(responseUserInfo.data);
         } else {
@@ -64,5 +71,43 @@ export class AuthKakaoService {
       this.logger.error(error);
       throw new UnauthorizedException();
     }
+  }
+
+  async login(
+    username: string,
+    authType: UserAuthType,
+  ): Promise<TokenResponse> {
+    const user = await this.userAccountService.findByUsername(
+      username,
+      {},
+      {},
+      { authType },
+    );
+
+    const [accessToken, refreshToken] = await Promise.all([
+      this.generateAccessToken(user.id),
+      this.generateRefreshToken(user.id),
+    ]);
+    return { accessToken, refreshToken };
+  }
+
+  protected async generateAccessToken(userId: string): Promise<string> {
+    return this.jwtService.signAsync(
+      { user_id: userId },
+      {
+        expiresIn: ACCESS_TOKEN_EXPIRE,
+        subject: JwtSubjectType.ACCESS,
+      },
+    );
+  }
+
+  protected async generateRefreshToken(userId: string): Promise<string> {
+    return this.jwtService.signAsync(
+      { user_id: userId },
+      {
+        expiresIn: REFRESH_TOKEN_EXPIRE,
+        subject: JwtSubjectType.REFRESH,
+      },
+    );
   }
 }

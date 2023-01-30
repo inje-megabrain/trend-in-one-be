@@ -114,7 +114,6 @@ export class YoutubeCrawlerService {
       });
       return trendingVideos.data.items as videoIngredients[];
     } catch (error) {
-      console.log('error', error);
       await this.tasksService.stopTask(CommunityTitle.YOUTUBE);
       throw new Error('Youtube API 1일 할당량 초과');
     }

@@ -1,4 +1,11 @@
-import { IsEmail, IsString, Length } from 'class-validator';
+import {
+  IsEmail,
+  IsEnum,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  Length,
+} from 'class-validator';
 import {
   BaseEntity,
   Column,
@@ -10,7 +17,7 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-import { OAuthType, UserProperties, UserRole } from '@domain/user/user';
+import { UserAuthType, UserProperties, UserRole } from '@domain/user/user';
 import { UserBookmark } from '@domain/user/user-bookmark.entity';
 
 @Entity('users')
@@ -26,10 +33,11 @@ export class User extends BaseEntity implements UserProperties {
   @IsString()
   email: string;
 
-  @Column()
+  @Column({ nullable: true })
   @IsString()
+  @IsOptional()
   @Length(5)
-  password: string;
+  password: string | null;
 
   @Column({
     type: 'enum',
@@ -40,10 +48,11 @@ export class User extends BaseEntity implements UserProperties {
 
   @Column({
     type: 'enum',
-    enum: OAuthType,
-    nullable: true,
+    enum: UserAuthType,
   })
-  oAuthType: OAuthType | null;
+  @IsEnum(UserAuthType)
+  @IsNotEmpty()
+  authType: UserAuthType;
 
   @OneToMany(() => UserBookmark, (userBookmark) => userBookmark)
   bookmarks: UserBookmark[];

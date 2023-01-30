@@ -1,9 +1,6 @@
 import { ApiProperty } from '@nestjs/swagger';
 
-import {
-  KakaoAccount,
-  KakaoUserInfo,
-} from '@app/auth/auth-kakao/kakao.command';
+import { KakaoAccount, KakaoUserInfo } from '@app/auth/commands/kakao.command';
 
 export class KakaoAuthUserResponse implements KakaoUserInfo {
   @ApiProperty({

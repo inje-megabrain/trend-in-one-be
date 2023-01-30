@@ -1,9 +1,15 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
-import { FindOptionsRelations, FindOptionsSelect, Repository } from 'typeorm';
+import {
+  FindOptionsRelations,
+  FindOptionsSelect,
+  FindOptionsWhere,
+  Repository,
+} from 'typeorm';
 
 import { UserCreateRequest } from '@app/user/user-account/dto/user-create.request';
 import { UserUpdateRequest } from '@app/user/user-account/dto/user-update.request';
+import { UserAuthType } from '@domain/user/user';
 import { User } from '@domain/user/user.entity';
 
 @Injectable()
@@ -77,6 +83,25 @@ export class UserAccountService {
     return user;
   }
 
+  async findByUsername(
+    username: string,
+    relations?: FindOptionsRelations<User>,
+    select?: FindOptionsSelect<User>,
+    where?: FindOptionsWhere<User>,
+  ): Promise<User> {
+    const user = this.userRepository.findOne({
+      select,
+      relations,
+      where: { username, ...where },
+    });
+
+    if (!user) {
+      throw new Error('User not found');
+    }
+
+    return user;
+  }
+
   protected async validateUsername(username: string): Promise<void> {
     const count = await this.userRepository.count({ where: { username } });
     if (count > 0) {
@@ -89,5 +114,20 @@ export class UserAccountService {
     if (count > 0) {
       throw new Error('Email already exists');
     }
+  }
+
+  async isUserRegistered(data: {
+    username: string;
+    email: string;
+    authType: UserAuthType;
+  }): Promise<boolean> {
+    const count = await this.userRepository.count({
+      where: {
+        username: data.username,
+        email: data.email,
+        authType: data.authType,
+      },
+    });
+    return count > 0;
   }
 }
