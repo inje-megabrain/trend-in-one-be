@@ -11,7 +11,6 @@ import { AuthKakaoService } from '@app/auth/auth-kakao/auth-kakao.service';
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: () => ({
-        baseURL: 'https://kauth.kakao.com',
         validateStatus: () => true,
       }),
     }),

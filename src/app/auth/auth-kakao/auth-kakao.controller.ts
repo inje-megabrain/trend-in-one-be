@@ -4,7 +4,6 @@ import {
   Controller,
   Logger,
   Post,
-  Response,
   UnauthorizedException,
 } from '@nestjs/common';
 import { ApiBody, ApiOkResponse, ApiOperation, ApiTags } from '@nestjs/swagger';
@@ -25,7 +24,6 @@ export class AuthKakaoController {
   @ApiBody({ type: KakaoAuthRequest })
   async login(
     @Body() accountRequestInfo: KakaoAuthRequest,
-    @Response() res,
   ): Promise<KakaoAuthUserResponse> {
     try {
       // 카카오 토큰 조회 후 계정 정보 가져오기
@@ -35,14 +33,13 @@ export class AuthKakaoController {
       }
       const kakao = await this.authKakaoService.kakaoLogin({ code, domain });
 
-      console.log(`kakaoUserInfo : ${JSON.stringify(kakao)}`);
       if (!kakao.id) {
         throw new BadRequestException('카카오 정보가 없습니다.');
       }
 
       return kakao;
-    } catch (e) {
-      console.log(e);
+    } catch (error) {
+      this.logger.error(error);
       throw new UnauthorizedException();
     }
   }
