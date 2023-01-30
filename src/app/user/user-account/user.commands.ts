@@ -2,14 +2,14 @@ import { UserProperties } from '@domain/user/user';
 
 export type UserProfile = Pick<
   UserProperties,
-  'username' | 'email' | 'role' | 'oAuthType'
+  'username' | 'email' | 'role' | 'authType'
 >;
 
 export type UserCreateCommand = Pick<
   UserProperties,
-  'username' | 'email' | 'password'
+  'username' | 'email' | 'authType'
 > &
-  Partial<Pick<UserProperties, 'role' | 'oAuthType'>>;
+  Partial<Pick<UserProperties, 'password' | 'role'>>;
 
 export type UserUpdateCommand = Partial<UserCreateCommand>;
 

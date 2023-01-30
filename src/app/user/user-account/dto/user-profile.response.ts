@@ -2,7 +2,7 @@ import { ApiProperty } from '@nestjs/swagger';
 import { IsEmail, IsEnum, IsNotEmpty, IsString } from 'class-validator';
 
 import { UserProfile } from '@app/user/user-account/user.commands';
-import { OAuthType, UserRole } from '@domain/user/user';
+import { UserAuthType, UserRole } from '@domain/user/user';
 
 export class UserProfileResponse implements UserProfile {
   @ApiProperty({ description: '유저명', example: 'test' })
@@ -20,10 +20,10 @@ export class UserProfileResponse implements UserProfile {
   @IsNotEmpty()
   role: UserRole;
 
-  @ApiProperty({ description: 'OAuth 타입', example: OAuthType.KAKAO })
-  @IsEnum(OAuthType)
+  @ApiProperty({ description: 'OAuth 타입', example: UserAuthType.KAKAO })
+  @IsEnum(UserAuthType)
   @IsNotEmpty()
-  oAuthType: OAuthType;
+  authType: UserAuthType;
 
   constructor(user: UserProfile) {
     Object.assign(this, user);

@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 import { UserCreateCommand } from '@app/user/user-account/user.commands';
-import { OAuthType, UserRole } from '@domain/user/user';
+import { UserAuthType, UserRole } from '@domain/user/user';
 
 export class UserCreateRequest implements UserCreateCommand {
   @ApiProperty({ description: '유저명', example: 'test' })
@@ -24,17 +24,17 @@ export class UserCreateRequest implements UserCreateCommand {
 
   @ApiProperty({ description: '비밀번호', example: '123456' })
   @IsString()
-  @IsNotEmpty()
+  @IsOptional()
   @Length(5)
-  password: string;
+  password?: string;
 
   @ApiProperty({ description: '권한', example: UserRole.USER })
   @IsEnum(UserRole)
   @IsOptional()
   role?: UserRole;
 
-  @ApiProperty({ description: 'OAuth 타입', example: OAuthType.KAKAO })
-  @IsEnum(OAuthType)
-  @IsOptional()
-  oAuthType?: OAuthType | null;
+  @ApiProperty({ description: 'Auth 타입', example: UserAuthType.KAKAO })
+  @IsEnum(UserAuthType)
+  @IsNotEmpty()
+  authType: UserAuthType;
 }
