@@ -1,8 +1,14 @@
+
 # Trend in One API 서버
 
 ## 0. Information
 ### 0-1. API Documents
-- Development API: localhost:13000/docs
+- Development API: [localhost:13000/docs](http://203.241.228.50:13000/docs)
+- ADMIN SERVER: http://203.241.228.50:13000/admin 
+  ![image](https://user-images.githubusercontent.com/75980875/229150392-50c1a7eb-b120-4213-b5b1-94d3ee29acd5.png)
+  ![image](https://user-images.githubusercontent.com/75980875/229150474-7dd26126-a175-4124-bb5e-9021b5d2d379.png)
+
+
 ### 0-2. Maintainers
 - 임채성 | [@puleugo](https://github.com/puleugo)
 ### 0-3. Technical Specs
